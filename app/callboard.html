@@ -1,0 +1,657 @@
+<title>The Callboard</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{
+  --paper:#eaeae4; --sheet:#f5f5f0; --ink:#16191c; --dim:#6e7370; --rule:#d2d3cb;
+  --rose:#c4304a; --rose-wash:#f3e2e4; --teal:#1e5a57; --teal-wash:#dfe9e6;
+  --done:#2d6b4e; --soon:#a8631a;
+  --disp:Oswald,"Arial Narrow",sans-serif;
+  --body:"Source Sans 3",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#15181a; --sheet:#1e2225; --ink:#eceee8; --dim:#8f948f; --rule:#32383a;
+  --rose:#e8788b; --rose-wash:#332226; --teal:#6fb3ab; --teal-wash:#1b2a29;
+  --done:#6fb894; --soon:#d69a4e;
+}}
+:root[data-theme="dark"]{
+  --paper:#15181a; --sheet:#1e2225; --ink:#eceee8; --dim:#8f948f; --rule:#32383a;
+  --rose:#e8788b; --rose-wash:#332226; --teal:#6fb3ab; --teal-wash:#1b2a29;
+  --done:#6fb894; --soon:#d69a4e;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);
+  font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+.sheet{max-width:760px;margin:0 auto;padding-inline:20px;padding-block:0 72px}
+.masthead{padding-block:26px 14px;border-bottom:3px solid var(--ink)}
+.eyebrow{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--dim)}
+h1{font-family:var(--disp);font-weight:600;font-size:clamp(1.9rem,7vw,2.6rem);margin:.1em 0 .12em;
+  letter-spacing:.01em;line-height:1;text-transform:uppercase;text-wrap:balance}
+.run{font-family:var(--mono);font-size:.72rem;color:var(--dim);letter-spacing:.04em;
+  display:flex;flex-wrap:wrap;gap:4px 14px}
+nav{display:flex;gap:0;overflow-x:auto;border-bottom:1px solid var(--rule);
+  position:sticky;top:0;background:var(--paper);z-index:9;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:0 0 auto;background:none;border:0;border-bottom:3px solid transparent;
+  font-family:var(--disp);font-size:.82rem;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--dim);padding:13px 14px;cursor:pointer;margin-bottom:-1px}
+nav button:hover{color:var(--ink)}
+nav button[aria-selected="true"]{color:var(--rose);border-bottom-color:var(--rose)}
+nav button:focus-visible{outline:2px solid var(--teal);outline-offset:-3px}
+section{padding-block:26px}
+h2{font-family:var(--disp);font-weight:500;font-size:1.05rem;letter-spacing:.11em;
+  text-transform:uppercase;margin:34px 0 4px;color:var(--teal)}
+h2:first-child{margin-top:0}
+.rule{height:1px;background:var(--rule);margin-bottom:16px}
+h3{font-family:var(--body);font-weight:600;font-size:1.02rem;margin:0;line-height:1.34}
+p{margin:.7em 0}
+/* ---- call strip ---- */
+.call{display:grid;grid-template-columns:62px 1fr;gap:0 15px;padding:16px 0;
+  border-bottom:1px solid var(--rule);align-items:start}
+.call:first-of-type{border-top:1px solid var(--rule)}
+.slot{font-family:var(--mono);font-size:.7rem;line-height:1.35;text-align:right;
+  padding-top:3px;color:var(--dim);letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.slot b{display:block;font-weight:700;font-size:.76rem;color:var(--ink)}
+.call.hot .slot b{color:var(--rose)}
+.call.soon .slot b{color:var(--soon)}
+.tick{display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+.tick input{appearance:none;width:21px;height:21px;flex:0 0 auto;margin:1px 0 0;
+  border:2px solid var(--dim);border-radius:3px;background:var(--sheet);cursor:pointer;position:relative}
+.tick input:checked{background:var(--done);border-color:var(--done)}
+.tick input:checked::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;
+  border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(42deg)}
+.tick input:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.call.off h3{text-decoration:line-through;opacity:.42}
+.call.off .why{display:none}
+.why{font-size:.9rem;color:var(--dim);margin-top:5px}
+.who{font-family:var(--mono);font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--teal);margin-top:6px}
+/* ---- dark week ---- */
+.dark{margin:18px 0;padding:15px 17px;background:var(--ink);color:var(--paper);border-radius:2px}
+.dark .lbl{font-family:var(--disp);font-size:1.3rem;letter-spacing:.3em;text-transform:uppercase;
+  font-weight:600}
+.dark .sub{font-family:var(--mono);font-size:.72rem;opacity:.72;margin-top:3px}
+/* ---- blocks ---- */
+.note{background:var(--teal-wash);border-left:3px solid var(--teal);padding:14px 16px;
+  margin:16px 0;font-size:.94rem;border-radius:0 3px 3px 0}
+.flag{background:var(--rose-wash);border-left:3px solid var(--rose);padding:14px 16px;
+  margin:16px 0;font-size:.94rem;border-radius:0 3px 3px 0}
+.prompt{background:var(--sheet);border:1px solid var(--rule);padding:14px 16px;margin:12px 0;
+  font-size:.95rem;border-radius:3px}
+.prompt cite{font-style:normal;display:block;font-family:var(--mono);font-size:.66rem;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-top:9px}
+details{border-bottom:1px solid var(--rule);padding:13px 0}
+summary{cursor:pointer;font-family:var(--body);font-weight:600;font-size:.98rem;list-style:none;
+  display:flex;gap:9px;align-items:baseline}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";font-family:var(--mono);color:var(--rose);font-weight:700;flex:0 0 auto}
+details[open] summary::before{content:"\2212"}
+summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.inner{padding:11px 0 4px 20px;font-size:.94rem}
+.inner ul{padding-left:19px;margin:.5em 0}
+.inner li{margin:.34em 0}
+.tag{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--dim);font-weight:400}
+.unv{color:var(--soon);font-family:var(--mono);font-size:.62rem;letter-spacing:.07em;
+  text-transform:uppercase;font-weight:700}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.86rem;margin:12px 0;min-width:420px}
+th{font-family:var(--mono);font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--dim);font-weight:400;text-align:left;padding:8px 10px 8px 0;
+  border-bottom:2px solid var(--ink)}
+td{padding:9px 10px 9px 0;border-bottom:1px solid var(--rule);vertical-align:top;
+  font-variant-numeric:tabular-nums}
+td:first-child{font-weight:600}
+textarea{width:100%;min-height:104px;font-family:var(--body);font-size:.96rem;padding:12px;
+  border:1px solid var(--rule);border-radius:3px;background:var(--sheet);color:var(--ink);
+  resize:vertical;margin-top:10px;line-height:1.5}
+textarea:focus-visible{outline:2px solid var(--teal);outline-offset:-1px}
+.count{font-family:var(--mono);font-size:.68rem;color:var(--dim);text-align:right;margin-top:4px;
+  font-variant-numeric:tabular-nums}
+.count.over{color:var(--rose);font-weight:700}
+.btn{font-family:var(--disp);font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;
+  padding:9px 15px;border:1px solid var(--ink);background:transparent;color:var(--ink);
+  cursor:pointer;border-radius:2px;margin:4px 6px 4px 0;display:inline-block;text-decoration:none}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.chips button{font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;padding:5px 11px;
+  border:1px solid var(--rule);background:var(--sheet);color:var(--dim);cursor:pointer;border-radius:2px}
+.chips button[aria-pressed="true"]{background:var(--teal);color:var(--paper);border-color:var(--teal)}
+.day{font-family:var(--mono);font-size:.68rem;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--rose);font-weight:700;margin:26px 0 2px;font-variant-numeric:tabular-nums}
+.sync{font-family:var(--mono);font-size:.66rem;color:var(--dim);letter-spacing:.04em;
+  padding-top:18px;border-top:1px solid var(--rule);margin-top:34px}
+.tally{font-family:var(--mono);font-size:.72rem;color:var(--dim);letter-spacing:.05em;
+  margin-top:20px;font-variant-numeric:tabular-nums}
+@media (max-width:430px){
+  .call{grid-template-columns:52px 1fr;gap:0 11px}
+  body{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="sheet">
+
+<header class="masthead">
+  <div class="eyebrow">Rehearsal &amp; Performance Schedule</div>
+  <h1>The Callboard</h1>
+  <div class="run">
+    <span>COMPANY: 9 SCHOOLS</span><span>FIRST CALL: NOV 1</span><span>OPENS: FALL 2027</span>
+  </div>
+</header>
+
+<nav role="tablist" aria-label="Sections">
+  <button role="tab" aria-selected="true" data-t="today">Today's Call</button>
+  <button role="tab" aria-selected="false" data-t="essays">Essays</button>
+  <button role="tab" aria-selected="false" data-t="company">The Company</button>
+  <button role="tab" aria-selected="false" data-t="run">Full Run</button>
+  <button role="tab" aria-selected="false" data-t="money">Money</button>
+  <button role="tab" aria-selected="false" data-t="calls">Contacts</button>
+  <button role="tab" aria-selected="false" data-t="after">After</button>
+</nav>
+
+<main>
+
+<!-- ═══ TODAY'S CALL ═══ -->
+<section id="today">
+  <h2>You're called for three things</h2><div class="rule"></div>
+  <div id="board">
+    <div class="call hot" data-id="ca1">
+      <div class="slot"><b>SEP 13</b>30 min</div>
+      <label class="tick"><input type="checkbox" data-id="ca1">
+        <span><h3>Open the Common App. Check it says Fall 2027. Add all nine schools.</h3>
+        <div class="why">Once the schools are in, the app shows you every real deadline and
+          requirement. That replaces the paper list entirely.</div></span></label>
+    </div>
+    <div class="call hot" data-id="ca2">
+      <div class="slot"><b>SEP 13</b>20 min</div>
+      <label class="tick"><input type="checkbox" data-id="ca2">
+        <span><h3>Copy every essay prompt and word limit into a note</h3>
+        <div class="why">Twenty minutes, and it unlocks half of this board. Most prompts are only
+          visible inside the Common App once a school is added.</div></span></label>
+    </div>
+    <div class="call hot" data-id="nd1">
+      <div class="slot"><b>SEP 16</b>75 words</div>
+      <label class="tick"><input type="checkbox" data-id="nd1">
+        <span><h3>Write the Notre Dame faith answer</h3>
+        <div class="why">The smallest real thing on the whole list, for the school you actually
+          want. You've said this out loud from a pulpit. Start here — not with the big essay.</div></span></label>
+    </div>
+  </div>
+
+  <div class="note"><strong>That's the entire call.</strong> Everything else is under Full Run
+    and it will still be there tomorrow. Don't go look at it.</div>
+
+  <div class="dark">
+    <div class="lbl">Dark</div>
+    <div class="sub">OCT 5–13 · TECH, PERFORMANCES, RECOVERY · NOTHING IS DUE FROM YOU</div>
+  </div>
+
+  <p class="tally" id="tally">0 of 21 struck · 21 to go</p>
+</section>
+
+<!-- ═══ ESSAYS ═══ -->
+<section id="essays" hidden>
+  <h2>Essay workbench</h2><div class="rule"></div>
+  <div class="flag"><strong>These are yours to write.</strong> What's here is questions to get you
+    unstuck and the real prompts so you're not guessing. Nobody writes them for you — several of
+    these schools make you sign that you wrote your own. And ghostwritten essays read like
+    everyone else's. Yours don't.</div>
+
+  <h2>Start here · 75 words</h2><div class="rule"></div>
+  <div class="prompt">"How does faith influence the decisions you make?"
+    <cite>Notre Dame · 50–100 words · pick 2 of 4 · this is one</cite></div>
+  <p>Don't write an essay. Answer the question. One decision, what you did, why faith was in the room.</p>
+  <details><summary>Questions to get you started</summary><div class="inner"><ul>
+    <li>Name one decision this year where faith actually changed what you did — not one you'd
+      have made anyway.</li>
+    <li>What do you believe that costs you something?</li>
+    <li>When you prepare to preach, what are you trying to do to the people listening?</li>
+    <li>Where have you doubted, and what did you do with it? Doubt isn't disqualifying at
+      Notre Dame. It's interesting.</li>
+  </ul>
+  <p><strong>Failure mode:</strong> describing faith in general. They know what faith is. They
+    want to know what yours <em>does</em>.</p></div></details>
+  <textarea id="e_faith" data-e="faith" data-lim="100"
+    placeholder="75 words. Start anywhere. Fix it later."></textarea>
+  <div class="count" data-for="faith">0 / 100 words</div>
+
+  <h2>Notre Dame · required · 150 words</h2><div class="rule"></div>
+  <div class="prompt">"Everyone has different priorities when considering their higher education
+    options and building their college or university list. Tell us about your 'non-negotiable'
+    factor(s) when searching for your future college home."
+    <cite>Notre Dame · 150 words max · required</cite></div>
+  <details><summary>What they're really asking</summary><div class="inner">
+    <p>Whether you know yourself well enough to have real criteria — and whether those criteria
+      happen to describe them.</p>
+    <p><strong>Failure mode:</strong> listing what's great about Notre Dame. They know. This is
+      about you, and the fit should be obvious without you pointing at it.</p>
+    <p><strong>Angles that fit you:</strong> somewhere faith gets discussed rather than assumed;
+      somewhere you can do science seriously and sing seriously without picking; a place small
+      enough that showing up changes something.</p>
+    <p>150 words is short. One non-negotiable done well beats three listed.</p></div></details>
+  <textarea id="e_nonneg" data-e="nonneg" data-lim="150" placeholder="150 words max."></textarea>
+  <div class="count" data-for="nonneg">0 / 150 words</div>
+
+  <h2>Notre Dame · second short answer · pick one</h2><div class="rule"></div>
+  <div class="prompt">2. "What is distinctive about your personal experiences and development
+    (eg, family support, culture, disability, personal background, community)? Why are these
+    experiences important to you and how will you enrich the Notre Dame community?"</div>
+  <div class="prompt">3. "Notre Dame's undergraduate experience is characterized by a collective
+    sense of care for every person. How do you foster service to others in your community?"</div>
+  <div class="prompt">4. "What would you fight for?"<cite>50–100 words each</cite></div>
+  <details><summary>Which one to take</summary><div class="inner">
+    <p><strong>#4 is the sleeper.</strong> Almost nobody answers it well, and it's where someone
+      with a preaching background can land a punch in eighty words. It rewards conviction.</p>
+    <p><strong>#3</strong> is safe and you have the material — but everyone answers it, so it's crowded.</p>
+    <p>Whichever you take, it should do something the faith answer doesn't. Two answers about
+      service wastes one of them.</p></div></details>
+  <textarea id="e_sa2" data-e="sa2" data-lim="100" placeholder="Which one? Then answer it."></textarea>
+  <div class="count" data-for="sa2">0 / 100 words</div>
+
+  <h2>Common App personal statement · 650 words</h2><div class="rule"></div>
+  <div class="note"><strong>Good enough to build on by Sept 30.</strong> Not finished. Not perfect.
+    Good enough that supplements can start. This one date governs everything else.</div>
+  <p>It goes to all nine schools, so it's the most valuable thing you'll write. It's also the
+    hardest — which is exactly why it isn't first on your call.</p>
+  <details><summary>You have four rough drafts. Start there.</summary><div class="inner">
+    <p>Before writing anything new, mark each one: <strong>alive</strong> (something real in here,
+      even if the writing is bad), <strong>dead</strong> (the topic isn't going anywhere), or
+      <strong>wrong shape</strong> (good material, wrong story around it).</p>
+    <p>One alive draft saves two weeks. Be honest, not loyal.</p></div></details>
+  <details><summary>Starting fresh — questions, not prompts</summary><div class="inner"><ul>
+    <li>What were you wrong about, and what changed your mind?</li>
+    <li>When have you been the only one who noticed something?</li>
+    <li>What do you do when nobody assigns it?</li>
+    <li>A moment on stage, or preaching, where something real happened that wasn't in the script.</li>
+    <li>Where do the pieces of you not fit together? Science and jazz. Softball and preaching.
+      That tension is usually the essay.</li>
+  </ul><p>What makes these work: a small specific moment you can actually see, then honest
+    thinking about it. Not an achievement list. Not a lesson learned.</p></div></details>
+  <textarea id="e_ps" data-e="ps" data-lim="650"
+    placeholder="Notes and fragments. This is a scratchpad, not the essay."></textarea>
+  <div class="count" data-for="ps">0 / 650 words</div>
+
+  <h2>The reuse map</h2><div class="rule"></div>
+  <div class="note"><strong>Four of your nine are Catholic and read for the same thing</strong> —
+    Notre Dame, Holy Cross, Fordham, DePaul. Catholic school, preaching team, service. One core
+    idea developed once and adapted four times. Biggest time-saver you have.<br><br>
+    <strong>Separate core:</strong> music identity — Madison, Minnesota, Eau Claire, NYU.<br><br>
+    <strong>Never shared:</strong> anything with a school's name in it. Fresh every time.</div>
+
+  <details><summary>Fordham · optional · 300 words · 1 of 3 <span class="unv">verify in Common App</span></summary>
+    <div class="inner">
+    <div class="prompt">A. "Our motto is 'New York is my campus, Fordham is my school.'… What has
+      prepared you to embrace the unique opportunity of living and learning in New York City?"</div>
+    <div class="prompt">C. "At Fordham, we expect students to care for and engage with their
+      communities… Please share an experience you had that caused you to develop a new perspective,
+      change your point of view, and/or empower you to take an action…"</div>
+    <p><strong>It says optional. Do it anyway.</strong> Optional means optional for them.
+      C is closest to material you already have.</p></div></details>
+  <details><summary>UW–Madison · "Why Madison" <span class="unv">verify in Common App</span></summary>
+    <div class="inner">
+    <p><strong>Do not</strong> reuse the Notre Dame non-negotiables essay with the name swapped.
+      Readers catch that instantly.</p>
+    <p>You spent a summer there for vocal performance. Almost no applicant can say that. Use it
+      specifically. Their jazz ensembles are open to any student regardless of major — a real,
+      checkable reason that's still about you.</p></div></details>
+  <details><summary>Minnesota <span class="unv">conflict — check Common App</span></summary>
+    <div class="inner"><p>Minnesota's own checklist says essays are <em>not required for
+      admission</em>. Other sources list two 150-word prompts. Find out which is true — it changes
+      how much work Minnesota actually is.</p></div></details>
+  <details><summary>Holy Cross · 4 pieces · December work, not now</summary><div class="inner">
+    <p>Holy Cross is Early Decision II, January 15. That writing happens in December — after Notre
+      Dame answers, with no musical and four applications already behind you.
+      <strong>Don't start it now.</strong></p></div></details>
+</section>
+
+<!-- ═══ COMPANY ═══ -->
+<section id="company" hidden>
+  <h2>The company</h2><div class="rule"></div>
+  <p class="tag" style="margin-bottom:14px">Confirm anything marked unverified before you rely on it.</p>
+
+  <details><summary>Notre Dame <span class="tag">· Nov 1 · Restrictive Early Action</span></summary>
+    <div class="inner"><ul>
+    <li>Decision mid-December. Non-binding — you still have until May 1.</li>
+    <li>REA carries priority for merit scholarships.</li>
+    <li><strong>Test-optional this cycle.</strong> With a 31, seriously consider not sending it —
+      it sits below their range, and a number below the band anchors the reader low.</li>
+    <li>Whole supplement is about 350 words. Smaller than it feels.</li>
+    <li>Free tuition under $150K — <strong>both parents' incomes combined</strong>.</li>
+    <li>Arts supplement through SlideRoom, due Nov 15.</li>
+    </ul><a class="btn" href="https://admissions.nd.edu/apply/" target="_blank" rel="noopener">Apply →</a></div></details>
+
+  <details><summary>UW–Madison <span class="tag">· Nov 1 · Early Action</span></summary>
+    <div class="inner"><ul>
+    <li>Supporting materials due Nov 10.</li>
+    <li>Jazz ensembles open to <em>any</em> student, any major, by audition.</li>
+    <li>Jazz Studies major exists if you want it.</li>
+    <li><strong>Demonstrated interest: not considered.</strong> A campus visit does not register.
+      Don't spend a school day on it.</li>
+    <li>Bucky's Tuition Promise caps at $65K AGI — doesn't apply.</li>
+    </ul><a class="btn" href="https://admissions.wisc.edu/apply-as-a-freshman/" target="_blank" rel="noopener">Apply →</a></div></details>
+
+  <details><summary>Fordham <span class="tag">· Nov 1 · Early Action</span></summary>
+    <div class="inner"><ul>
+    <li>"Priority Performance" is theatre and dance only — not music.</li>
+    <li>If you want Fordham theatre, that's a separate track with its own prescreen.
+      Decide now, not in November.</li>
+    <li>Supplement optional, 300 words, 1 of 3.</li>
+    <li>Expensive and not especially generous with aid.</li>
+    </ul><a class="btn" href="https://www.fordham.edu/undergraduate-admission/apply/dates-and-deadlines/" target="_blank" rel="noopener">Apply →</a></div></details>
+
+  <details><summary>Minnesota <span class="tag">· Nov 1 · Early Action I</span></summary>
+    <div class="inner"><ul>
+    <li>Nov 1 is also the scholarship priority deadline and gates competitive majors.</li>
+    <li><strong>Wisconsin reciprocity applies</strong> — about $38,226 total, far below out-of-state.</li>
+    <li>Reciprocity needs its own separate application, opening around Feb 2027. Easy to miss.</li>
+    <li>Demonstrated interest: not considered.</li>
+    </ul><a class="btn" href="https://admissions.tc.umn.edu/" target="_blank" rel="noopener">Apply →</a></div></details>
+
+  <details><summary>DePaul <span class="tag">· Nov 15 · Early Action</span></summary>
+    <div class="inner"><ul>
+    <li>Decision by Dec 15.</li>
+    <li><strong>Warning:</strong> the School of Music has its own <strong>Dec 1</strong> deadline
+      with no early action.</li>
+    <li>Jazz Studies requires a prescreen from everyone, then a live audition — register by Jan 15.</li>
+    <li>Music decisions not released until March–April.</li>
+    </ul><a class="btn" href="https://www.depaul.edu/admission/undergraduate-admission/deadlines" target="_blank" rel="noopener">Apply →</a></div></details>
+
+  <details><summary>College of the Holy Cross <span class="tag">· Jan 15 · Early Decision II</span></summary>
+    <div class="inner"><ul>
+    <li><strong>ED II is binding.</strong> Admitted means you go.</li>
+    <li>Interviews are highly recommended and actually used. Request in October, interview by Dec 5.</li>
+    <li>Meets 100% of need. Full tuition grant at $100K or less.</li>
+    <li>Brooks music scholarship is full tuition — <strong>music majors only</strong>.</li>
+    <li>Jazz combo and private voice lessons open to non-majors.</li>
+    </ul><a class="btn" href="https://www.holycross.edu/admissions-aid/how-to-apply" target="_blank" rel="noopener">Apply →</a></div></details>
+
+  <details><summary>NYU <span class="tag">· Jan 5 · Regular Decision</span></summary>
+    <div class="inner"><ul>
+    <li>Most expensive here at ~$101,000, and historically does <em>not</em> meet full need.</li>
+    <li>Steinhardt for jazz voice, Tisch for musical theatre — separate applications and reviews.</li>
+    <li>Steinhardt jazz talent awards are automatic, but require applying to the major.</li>
+    <li>Demonstrated interest: considered.</li>
+    <li><strong>Honest read:</strong> a reach with a bad payout structure for your situation.
+      Don't over-invest.</li>
+    </ul><a class="btn" href="https://www.nyu.edu/admissions/undergraduate-admissions.html" target="_blank" rel="noopener">Apply →</a></div></details>
+
+  <details><summary>UW–Eau Claire <span class="tag">· Feb 1</span></summary>
+    <div class="inner"><ul>
+    <li>Cheapest on the list — $19,933 billed.</li>
+    <li><strong>"All Blugolds are welcome to audition"</strong> — jazz is open to every student.</li>
+    <li>No jazz degree; jazz is co-curricular. You sing without majoring.</li>
+    <li>Possibly the best value here for what you actually want.</li>
+    </ul><a class="btn" href="https://www.uwec.edu/admissions/" target="_blank" rel="noopener">Apply →</a></div></details>
+
+  <details><summary>Winona State <span class="tag">· in or out?</span></summary>
+    <div class="inner"><ul>
+    <li>Still an open decision.</li>
+    <li>Wisconsin students get the resident rate through reciprocity.</li>
+    <li>Costs <span class="unv">unverified</span>.</li></ul></div></details>
+</section>
+
+<!-- ═══ FULL RUN ═══ -->
+<section id="run" hidden>
+  <h2>Full run</h2><div class="rule"></div>
+  <div class="chips" id="chips"></div>
+  <div id="runList"></div>
+</section>
+
+<!-- ═══ MONEY ═══ -->
+<section id="money" hidden>
+  <h2>What things actually cost</h2><div class="rule"></div>
+  <div class="note"><strong>Sticker price is fiction.</strong> The expensive schools can end up
+    cheapest, because the ones that cost $90K meet 100% of need and the ones that cost $30K don't.
+    Don't cross anything off because the top number scared you.</div>
+  <div class="scroll"><table>
+    <thead><tr><th>School</th><th>Sticker</th><th>Free-tuition rule</th><th>Meets need</th></tr></thead>
+    <tbody>
+    <tr><td>Notre Dame</td><td>~$91,986</td><td>Under $150K = free tuition. Under $60K = tuition,
+      fees, housing, food.</td><td>100%, no loans</td></tr>
+    <tr><td>Holy Cross</td><td>$91,740</td><td>$100K or less + reasonable assets = full tuition</td>
+      <td>100%</td></tr>
+    <tr><td>NYU</td><td>$100,998</td><td>None</td><td><strong>No</strong></td></tr>
+    <tr><td>Fordham</td><td>~$85,000</td><td>None</td><td>Not confirmed</td></tr>
+    <tr><td>Minnesota</td><td>$38,226</td><td>Wisconsin reciprocity rate</td><td>No</td></tr>
+    <tr><td>UW–Madison</td><td>~$30,644 <span class="unv">25–26</span></td>
+      <td>Bucky's = $65K AGI. Doesn't apply.</td><td>No</td></tr>
+    <tr><td>UW–Eau Claire</td><td>$19,933</td><td>WI Promise = $55K AGI. Doesn't apply.</td><td>No</td></tr>
+    <tr><td>DePaul</td><td class="unv">unverified</td><td>None found</td><td>No</td></tr>
+    <tr><td>Winona State</td><td>~$20,146 <span class="unv">prior</span></td><td>Reciprocity</td><td>No</td></tr>
+    </tbody></table></div>
+
+  <h2>The question that decides everything</h2><div class="rule"></div>
+  <div class="flag"><strong>Does Notre Dame's free tuition actually apply?</strong><br><br>
+    They cover full tuition under $150,000 — but they require the Noncustodial Parent CSS Profile,
+    which means <strong>both parents' incomes count together</strong>, not just the one you live with.<br><br>
+    Nobody can answer this until both profiles are filed. It's the difference between Notre Dame
+    being the cheapest school here and one of the most expensive.
+    <strong>Parents' job, not yours.</strong></div>
+
+  <h2>Money deadlines</h2><div class="rule"></div>
+  <div class="scroll"><table>
+    <thead><tr><th>Date</th><th>What</th></tr></thead><tbody>
+    <tr><td>Oct 1</td><td>FAFSA and CSS Profile both open</td></tr>
+    <tr><td>Nov 15</td><td>Notre Dame aid priority — FAFSA + CSS + IDOC. <strong>Miss this and
+      you lose money.</strong></td></tr>
+    <tr><td>Jan 15</td><td>Notre Dame Regular Decision aid priority</td></tr>
+    <tr><td>~Feb 2027</td><td>MN–WI reciprocity application opens. Separate. Easy to miss.</td></tr>
+    </tbody></table></div>
+  <p class="tag">FAFSA Notre Dame 001840 · CSS Notre Dame 1841 · CSS Holy Cross 3282</p>
+
+  <h2>Music money — read once</h2><div class="rule"></div>
+  <div class="flag"><strong>Nearly every music scholarship requires declaring the music major.</strong>
+    Holy Cross Brooks is full tuition, majors only. Madison's waiver, majors only. NYU Steinhardt,
+    majors only.<br><br>
+    <strong>Still open to you without majoring:</strong> singing in the ensembles, which is open
+    almost everywhere including Madison's jazz groups and the Holy Cross jazz combo. And
+    <strong>Eau Claire</strong>, where jazz is open to every student.<br><br>
+    <strong>What that means:</strong> you don't need to chase auditions at eight schools this fall.
+    That whole workstream is off your plate.</div>
+</section>
+
+<!-- ═══ CALLS ═══ -->
+<section id="calls" hidden>
+  <h2>Who to call</h2><div class="rule"></div>
+  <div class="scroll"><table>
+    <thead><tr><th>Where</th><th>Contact</th><th>For</th></tr></thead><tbody>
+    <tr><td>Notre Dame</td><td>admissions@nd.edu<br>574-631-7505</td><td>Arts supplement</td></tr>
+    <tr><td><strong>UW–Madison Music</strong></td><td>admissions@music.wisc.edu</td>
+      <td><strong>Jazz voice prescreen date — this week</strong></td></tr>
+    <tr><td>Holy Cross</td><td>admissions@holycross.edu<br>508-793-2443</td><td>Interview — ask in October</td></tr>
+    <tr><td>Holy Cross aid</td><td>financialaid@holycross.edu<br>508-793-2265</td><td>Net cost before December</td></tr>
+    <tr><td>DePaul Music</td><td>musicadmissions@depaul.edu<br>773-325-7444</td><td>Dec 1 music deadline</td></tr>
+    <tr><td>NYU Tisch</td><td>tisch.drama.ug@nyu.edu</td><td>Artistic review</td></tr>
+    </tbody></table></div>
+
+  <h2>Emails you can steal</h2><div class="rule"></div>
+  <details><summary>Asking a music department a question</summary><div class="inner">
+    <p><em>Subject: Prescreen timing — prospective first-year, jazz voice</em></p>
+    <p>Hi — I'm a senior applying for fall 2027 and I'm interested in jazz voice. Two questions:
+      when is the prescreen deadline for next fall's auditions, and are students who aren't music
+      majors eligible to audition for scholarships or ensembles? Thank you — [name], [school], [city]</p>
+    <p class="tag">Short. Two specific questions. They answer short emails.</p></div></details>
+  <details><summary>Requesting an interview</summary><div class="inner">
+    <p><em>Subject: Interview request — first-year applicant</em></p>
+    <p>Hi — I'm applying as a first-year student for fall 2027 and I'd like to request an interview.
+      I'm available [two or three real windows]. Thank you — [name], [school], [city]</p>
+    <p class="tag">Send in October. Slots fill.</p></div></details>
+  <details><summary>What not to send</summary><div class="inner">
+    <p>Don't email to say you submitted. Don't email to say you're still interested with nothing
+      else in the message. Don't email weekly. Contact them when you have a real question or real
+      news. Anything else reads as anxious, and admissions offices notice.</p></div></details>
+</section>
+
+<!-- ═══ AFTER ═══ -->
+<section id="after" hidden>
+  <h2>After Nov 1</h2><div class="rule"></div>
+  <div class="note">Submitting is halfway. Most of the money happens after this.
+    <strong>Don't read this now.</strong> It's here so it exists in November.</div>
+  <details><summary>November</summary><div class="inner"><ul>
+    <li>DePaul Early Action — Nov 15</li>
+    <li><strong>Notre Dame aid priority — Nov 15.</strong> FAFSA + CSS + IDOC</li>
+    <li>Notre Dame arts supplement via SlideRoom — Nov 15</li>
+    <li>Alumni interviews open at several schools</li></ul></div></details>
+  <details><summary>December — the big month</summary><div class="inner"><ul>
+    <li><strong>DePaul School of Music — Dec 1.</strong> Separate application, no early action</li>
+    <li>Holy Cross interview — by Dec 5</li>
+    <li><strong>Holy Cross net cost known — by Dec 20</strong>, before any binding decision</li>
+    <li>Write the Holy Cross supplements</li>
+    <li><strong>Notre Dame answers — mid-December</strong></li></ul></div></details>
+  <details><summary>The December decision</summary><div class="inner">
+    <p><strong>Notre Dame says yes</strong> → Holy Cross ED II is off. Apply Regular there if you
+      want two aid offers to compare.</p>
+    <p><strong>Notre Dame says no</strong> → Holy Cross ED II is your strongest move, if the cost works.</p>
+    <p><strong>Deferred</strong> → the hard one. You're still alive at Notre Dame, but ED II is
+      binding: get into Holy Cross and you withdraw from Notre Dame before they ever give you a
+      real answer. That's a values question, not a strategy question, and it's yours.</p>
+    <p><strong>The one rule:</strong> don't commit to anything binding until you know what it costs.</p></div></details>
+  <details><summary>January</summary><div class="inner"><ul>
+    <li>Minnesota Regular — Jan 1</li><li>Fordham Regular — Jan 3 <span class="unv">verify</span></li>
+    <li>Notre Dame Regular — Jan 4</li><li>NYU Regular — Jan 5</li>
+    <li><strong>Holy Cross ED II and Regular — Jan 15</strong></li>
+    <li>Mid-year report goes from your school</li></ul></div></details>
+  <details><summary>February – May</summary><div class="inner"><ul>
+    <li>~Feb — MN–WI reciprocity application opens. Separate. Don't miss it.</li>
+    <li>Feb 15 — Holy Cross ED II decision</li>
+    <li>Mar–Apr — DePaul music decisions</li>
+    <li>March — Notre Dame Regular Decision</li>
+    <li>Mar–Apr — admitted student days. Much better than a fall tour.</li>
+    <li>April — compare aid offers side by side. Appeal anything out of line.</li>
+    <li><strong>May 1 — deposit. Not before.</strong></li></ul></div></details>
+</section>
+
+</main>
+
+<p class="sync" id="sync">Saving to this device only.</p>
+
+</div>
+
+<script>
+const TASKS=[
+ {id:'ca1',s:'Common App',t:"Open the Common App. Check it says Fall 2027. Add all nine schools.",d:'2026-09-13',p:1,m:'30 min',w:"Once the schools are in, the app shows you every real deadline and requirement. That replaces the paper list entirely."},
+ {id:'ca2',s:'Common App',t:'Copy every essay prompt and word limit into a note',d:'2026-09-13',p:1,m:'20 min',w:'Twenty minutes, and it unlocks half of this board. Most prompts are only visible inside the Common App once a school is added.'},
+ {id:'nd1',s:'Notre Dame',t:'Write the Notre Dame faith answer',d:'2026-09-16',p:1,m:'75 words',w:"The smallest real thing on the whole list, for the school you actually want. You've said this out loud from a pulpit. Start here."},
+ {id:'rec1',s:'Common App',t:'Invite your counselor and two teachers as recommenders',d:'2026-09-18',p:1,m:'15 min',w:'This runs on their calendar, not yours. Most common reason a Nov 1 application misses.'},
+ {id:'mus1',s:'UW–Madison',t:'Email admissions@music.wisc.edu about the jazz voice prescreen date',d:'2026-09-18',p:1,m:'10 min',w:'Last year the prescreen was due Oct 31 — before the application. If that repeats it changes your whole October.'},
+ {id:'act1',s:'Common App',t:'Fill in Activities — 10 slots, 150 characters each',d:'2026-09-20',p:2,m:'90 min',w:'Most underrated part of the application. NHS president, softball, musicals, preaching team.'},
+ {id:'hon1',s:'Common App',t:'Fill in Honors — Jerry nomination, 3rd globally at the Great Shake',d:'2026-09-20',p:2,m:'30 min',w:'Outside recognition is worth more than another activity line. Almost nobody has this.'},
+ {id:'tri1',s:'Essays',t:'Sort your four drafts: alive, dead, or wrong shape',d:'2026-09-20',p:2,m:'60 min',w:'One alive draft saves two weeks. Be honest, not loyal.'},
+ {id:'ps1',s:'Essays',t:'Personal statement — good enough to build on',d:'2026-09-30',p:1,m:'650 words',w:'Not finished. Not perfect. Good enough that supplements can start. This date governs everything.'},
+ {id:'nd2',s:'Notre Dame',t:'Write the 150-word non-negotiables essay',d:'2026-10-02',p:2,m:'150 words',w:''},
+ {id:'nd3',s:'Notre Dame',t:'Write the second short answer — #2, #3, or #4',d:'2026-10-02',p:2,m:'100 words',w:'#4 "What would you fight for?" is the sleeper. Nobody answers it well.'},
+ {id:'hc1',s:'Holy Cross',t:'Request your Holy Cross interview',d:'2026-10-02',p:2,m:'10 min',w:'Ten minutes now. Interviews there count, and slots fill.'},
+ {id:'fa1',s:'Money',t:'Parents: file FAFSA + CSS Profile, both parents',d:'2026-10-05',p:1,m:'parents',w:'Opens Oct 1. Notre Dame needs both parents on the CSS — it decides whether free tuition applies.'},
+ {id:'wi1',s:'UW–Madison',t:'Write the Why Madison essay',d:'2026-10-16',p:2,m:'',w:'You spent a summer there. Use it specifically. Do not recycle the Notre Dame essay.'},
+ {id:'mn1',s:'Minnesota',t:'Write the Minnesota supplements, if they are required',d:'2026-10-16',p:2,m:'300 words',w:''},
+ {id:'ck1',s:'Notre Dame',t:'Checkpoint: is the Notre Dame application genuinely strong?',d:'2026-10-15',p:1,m:'decide',w:'If it is not, switch to Regular Decision. An early read of a weak application is a wasted shot.'},
+ {id:'fd1',s:'Fordham',t:'Write the Fordham supplement — optional, do it anyway',d:'2026-10-18',p:2,m:'300 words',w:'Optional means optional for them.'},
+ {id:'sub1',s:'Minnesota',t:'SUBMIT Minnesota',d:'2026-10-20',p:1,m:'places',w:'First one out. Easiest. Take the win.'},
+ {id:'sub2',s:'UW–Madison',t:'SUBMIT UW–Madison',d:'2026-10-22',p:1,m:'places',w:''},
+ {id:'sub3',s:'Fordham',t:'SUBMIT Fordham',d:'2026-10-27',p:1,m:'places',w:''},
+ {id:'sub4',s:'Notre Dame',t:'SUBMIT Notre Dame',d:'2026-10-27',p:1,m:'places',w:'Five days before the deadline. Not on deadline day — that is how portal disaster stories start.'}
+];
+const LS='callboard-v1';
+let done={},notes={},db=null;
+try{const r=JSON.parse(localStorage.getItem(LS)||'{}');done=r.done||{};notes=r.notes||{}}catch(e){}
+function cache(){try{localStorage.setItem(LS,JSON.stringify({done,notes}))}catch(e){}}
+
+const fmt=s=>new Date(s+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})
+  .toUpperCase();
+const left=s=>Math.round((new Date(s+'T12:00:00')-new Date())/864e5);
+function heat(t){const n=left(t.d);return n<0?'hot':n<=4?'hot':n<=11?'soon':''}
+function stamp(t){const n=left(t.d);
+  return `<div class="slot"><b>${fmt(t.d)}</b>${n<0?'overdue':n===0?'today':t.m||n+' days'}</div>`}
+function strip(t,why){
+  return `<div class="call ${heat(t)}${done[t.id]?' off':''}" data-id="${t.id}">${stamp(t)}
+    <label class="tick"><input type="checkbox" data-id="${t.id}"${done[t.id]?' checked':''}>
+    <span><h3>${t.t}</h3>${why&&t.w?`<div class="why">${t.w}</div>`:''}
+    <div class="who">${t.s}</div></span></label></div>`}
+const open=()=>TASKS.filter(t=>!done[t.id]).sort((a,b)=>a.p-b.p||a.d.localeCompare(b.d));
+
+function drawBoard(){
+  const o=open(),el=document.getElementById('board');
+  el.innerHTML=o.length?o.slice(0,3).map(t=>strip(t,1)).join('')
+    :'<p style="padding:26px 0"><strong>Nothing called.</strong> Everything on the board is struck.</p>';
+}
+function drawTally(){
+  const n=TASKS.filter(t=>done[t.id]).length;
+  document.getElementById('tally').textContent=
+    `${n} of ${TASKS.length} struck · ${TASKS.length-n} to go`;
+}
+let filter='all';
+function drawRun(){
+  const list=TASKS.filter(t=>filter==='all'||t.s===filter).sort((a,b)=>a.d.localeCompare(b.d));
+  let out='',last='';
+  list.forEach(t=>{if(t.d!==last){out+=`<div class="day">${fmt(t.d)}</div>`;last=t.d}
+    out+=strip(t,0)});
+  document.getElementById('runList').innerHTML=out;
+  const groups=[...new Set(TASKS.map(t=>t.s))];
+  document.getElementById('chips').innerHTML=['all',...groups].map(g=>
+    `<button data-f="${g}" aria-pressed="${filter===g}">${g==='all'?'Everything':g}</button>`).join('');
+}
+function markOne(id,on){
+  document.querySelectorAll(`.call[data-id="${id}"]`).forEach(c=>c.classList.toggle('off',on));
+  document.querySelectorAll(`input[data-id="${id}"]`).forEach(i=>{if(i.checked!==on)i.checked=on});
+}
+function setDone(id,on,push){
+  done[id]=on;cache();markOne(id,on);drawTally();
+  if(push&&db)db.collection('tasks').doc(id).set({done:on}).catch(()=>{});
+}
+function counter(ta){
+  const k=ta.dataset.e,lim=+ta.dataset.lim,el=document.querySelector(`.count[data-for="${k}"]`);
+  if(!el)return;
+  const w=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;
+  el.textContent=`${w} / ${lim} words`;el.classList.toggle('over',w>lim);
+}
+document.querySelectorAll('textarea[data-e]').forEach(ta=>{
+  if(notes[ta.dataset.e])ta.value=notes[ta.dataset.e];counter(ta)});
+
+document.addEventListener('change',e=>{
+  const cb=e.target.closest('input[type=checkbox][data-id]');
+  if(cb)setDone(cb.dataset.id,cb.checked,1);
+});
+let saveTimer;
+document.addEventListener('input',e=>{
+  const ta=e.target.closest('textarea[data-e]');if(!ta)return;
+  notes[ta.dataset.e]=ta.value;cache();counter(ta);
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{if(db)db.collection('notes').doc(ta.dataset.e)
+    .set({text:ta.value}).catch(()=>{})},900);
+});
+document.addEventListener('click',e=>{
+  const tab=e.target.closest('nav button');
+  if(tab){
+    document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected',b===tab));
+    document.querySelectorAll('main section').forEach(s=>s.hidden=s.id!==tab.dataset.t);
+    if(tab.dataset.t==='today')drawBoard();
+    window.scrollTo(0,0);return;
+  }
+  const c=e.target.closest('#chips button');
+  if(c){filter=c.dataset.f;drawRun()}
+});
+
+drawBoard();drawTally();drawRun();
+
+Promise.resolve(window.claude&&window.claude.use?window.claude.use('db'):null).then(d=>{
+  if(!d)return;
+  db=d;
+  const sync=document.getElementById('sync');
+  sync.textContent='Synced. Your progress follows you to any device.';
+  d.collection('tasks').onSnapshot(s=>{
+    s.docs.forEach(doc=>{const v=!!(doc.data()||{}).done;
+      if(done[doc.id]!==v){done[doc.id]=v;markOne(doc.id,v)}});
+    cache();drawTally();drawBoard();
+  },()=>{sync.textContent='Sync unavailable. Saving to this device only.'});
+  d.collection('notes').onSnapshot(s=>{
+    s.docs.forEach(doc=>{
+      const txt=((doc.data()||{}).text)||'',ta=document.querySelector(`textarea[data-e="${doc.id}"]`);
+      if(ta&&ta!==document.activeElement&&ta.value!==txt){ta.value=txt;notes[doc.id]=txt;counter(ta)}});
+    cache();
+  },()=>{});
+}).catch(()=>{});
+</script>
