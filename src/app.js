@@ -1,4 +1,4 @@
-import {TASKS, SCHOOLS, MONEY, MONEY_DATES, CONTACTS} from './data.js';
+import {TASKS, SCHOOLS, MONEY, MONEY_DATES, CONTACTS, PARENT, VERIFY, GLOSSARY} from './data.js';
 import {ESSAYS} from './essays.js';
 import {workbook} from './xlsx.js';
 
@@ -30,11 +30,15 @@ const openTasks=()=>TASKS.filter(t=>!S.done[t.id]).sort((a,b)=>a.p-b.p||a.d.loca
 /* ---------- today ---------- */
 function strip(t,why){
   const n=LEFT(t.d);
+  // The steps sit OUTSIDE the <label>. Inside it, tapping "show me how"
+  // would toggle the checkbox.
+  const steps=(t.how&&t.how.length)?`<details class="how"><summary>Show me exactly how</summary>
+      <ol>${t.how.map(x=>`<li>${x}</li>`).join('')}</ol></details>`:'';
   return `<div class="call ${heat(t)}${S.done[t.id]?' off':''}" data-id="${t.id}">
     <div class="slot"><b>${FMT(t.d)}</b>${n<0?'overdue':n===0?'today':(t.m||n+' days')}</div>
-    <label class="tick"><input type="checkbox" data-id="${t.id}"${S.done[t.id]?' checked':''}>
-    <span><h3>${esc(t.t)}</h3>${why&&t.w?`<div class="why">${esc(t.w)}</div>`:''}
-    <div class="who">${esc(t.s)}</div></span></label></div>`;
+    <div><label class="tick"><input type="checkbox" data-id="${t.id}"${S.done[t.id]?' checked':''}>
+    <span><h3>${t.t}</h3>${why&&t.w?`<div class="why">${esc(t.w)}</div>`:''}
+    <div class="who">${esc(t.s)}</div></span></label>${steps}</div></div>`;
 }
 function drawToday(){
   const o=openTasks();
@@ -177,6 +181,14 @@ function drawWalk(){
 
 /* ---------- static tables ---------- */
 function drawStatic(){
+  document.getElementById('parentList').innerHTML=PARENT.map(p=>
+    `<div class="call"><div class="slot"><b>${esc(p.due)}</b></div>
+     <div><h3>${esc(p.t)}</h3><div class="why">${esc(p.w)}</div></div></div>`).join('');
+  document.getElementById('verifyList').innerHTML=VERIFY.map(v=>
+    `<details><summary>${esc(v.t)}</summary><div class="inner"><p>${esc(v.w)}</p>
+     <p class="tag">Confirm with: ${esc(v.c)}</p></div></details>`).join('');
+  document.getElementById('glossary').innerHTML=GLOSSARY.map(g=>
+    `<div class="term"><dt>${esc(g.t)}</dt><dd>${esc(g.d)}</dd></div>`).join('');
   document.getElementById('schoolList').innerHTML=SCHOOLS.map(s=>
     `<details><summary>${esc(s.n)} <span class="tag">· ${esc(s.due)} · ${esc(s.plan)}</span></summary>
      <div class="inner"><ul>${s.b.map(b=>`<li>${esc(b)}</li>`).join('')}</ul>

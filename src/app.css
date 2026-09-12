@@ -158,3 +158,17 @@ td:first-child{font-weight:600}
   h2{color:#000} .call{page-break-inside:avoid}
   a[href^="http"]::after{content:" (" attr(href) ")";font-size:8pt;color:#555}
 }
+/* step-by-step instructions inside a task */
+details.how{border:0;border-top:1px dashed var(--rule);margin-top:10px;padding:8px 0 0}
+details.how summary{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--teal);font-weight:400}
+details.how summary::before{content:"\2192";color:var(--teal)}
+details.how[open] summary::before{content:"\2193"}
+details.how ol{margin:10px 0 4px;padding-left:22px;font-size:.92rem}
+details.how li{margin:.55em 0;line-height:1.5}
+/* glossary */
+#glossary{margin:0}
+.term{padding:13px 0;border-bottom:1px solid var(--rule)}
+.term dt{font-family:var(--disp);font-size:.95rem;font-weight:500;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--teal)}
+.term dd{margin:5px 0 0;font-size:.94rem}

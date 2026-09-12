@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Callboard — College Applications</title>
+<meta name="description" content="A guided workbench for nine college applications: today's three tasks, coached essay work, real costs, and everything exportable.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎭</text></svg>">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="sheet">
+
+<header class="masthead">
+  <div class="eyebrow">Rehearsal &amp; Performance Schedule</div>
+  <h1>The Callboard</h1>
+  <div class="run"><span>COMPANY: 9 SCHOOLS</span><span>FIRST CALL: NOV 1</span><span>OPENS: FALL 2027</span></div>
+</header>
+
+<nav role="tablist" aria-label="Sections">
+  <button role="tab" aria-selected="true" data-t="today">Today's Call</button>
+  <button role="tab" aria-selected="false" data-t="essays">Essays</button>
+  <button role="tab" aria-selected="false" data-t="company">The Company</button>
+  <button role="tab" aria-selected="false" data-t="run">Full Run</button>
+  <button role="tab" aria-selected="false" data-t="money">Money</button>
+  <button role="tab" aria-selected="false" data-t="calls">Contacts</button>
+  <button role="tab" aria-selected="false" data-t="after">After</button>
+  <button role="tab" aria-selected="false" data-t="parents">Parents</button>
+  <button role="tab" aria-selected="false" data-t="words">Words</button>
+  <button role="tab" aria-selected="false" data-t="save">Save &amp; Print</button>
+</nav>
+
+<main>
+
+<section id="today">
+  <h2 id="hdrToday">You're called for three things</h2><div class="rule"></div>
+  <div id="board">
+    <div class="call hot"><div class="slot"><b>SEP 13</b>30 min</div>
+      <label class="tick"><input type="checkbox" data-id="ca1">
+      <span><h3>Open the Common App. Check it says Fall 2027. Add all nine schools.</h3>
+      <div class="why">Once the schools are in, the app shows you every real deadline and requirement.</div>
+      <div class="who">Common App</div></span></label></div>
+  </div>
+  <div class="note"><strong>That's the entire call.</strong> Everything else is under Full Run and
+    it will still be there tomorrow. Don't go look at it.</div>
+  <div class="dark-strip"><div class="lbl">Dark</div>
+    <div class="sub">OCT 5–13 · TECH, PERFORMANCES, RECOVERY · NOTHING IS DUE FROM YOU</div></div>
+  <p class="tally" id="tally">Loading…</p>
+</section>
+
+<section id="essays" hidden>
+  <div id="essayHome">
+    <h2>Essay work</h2><div class="rule"></div>
+    <div class="flag"><strong>Here's how this works.</strong> You don't start with a blank page.
+      I ask you questions, you answer them badly and quickly, and then I show you that your
+      answers already contain the essay. Four steps each: gather, choose, draft, sharpen.<br><br>
+      <strong>I don't write any of it.</strong> Several of these schools make you sign that the
+      writing is yours — and ghostwritten essays read like everyone else's anyway. Yours won't.</div>
+    <div id="essayList"></div>
+    <h2>The reuse map</h2><div class="rule"></div>
+    <div class="note"><strong>Four of your nine are Catholic and read for the same thing</strong> —
+      Notre Dame, Holy Cross, Fordham, DePaul. One core idea, retold four times. Never pasted.<br><br>
+      <strong>Separate core:</strong> music identity — Madison, Minnesota, Eau Claire, NYU.<br><br>
+      <strong>Never shared:</strong> anything with a school's name in it.</div>
+  </div>
+  <div id="essayWalk" hidden></div>
+</section>
+
+<section id="company" hidden><h2>The company</h2><div class="rule"></div>
+  <p class="tag" style="margin-bottom:14px">Confirm anything marked unverified before you rely on it.</p>
+  <div id="schoolList"></div></section>
+
+<section id="run" hidden><h2>Full run</h2><div class="rule"></div>
+  <div class="chips" id="chips"></div><div id="runList"></div></section>
+
+<section id="money" hidden>
+  <h2>What things actually cost</h2><div class="rule"></div>
+  <div class="note"><strong>Sticker price is fiction.</strong> The expensive schools can end up
+    cheapest — the ones that cost $90K meet 100% of need and the ones that cost $30K don't.
+    Don't cross anything off because the top number scared you.</div>
+  <div class="scroll"><table id="moneyTable"></table></div>
+  <h2>The question that decides everything</h2><div class="rule"></div>
+  <div class="flag"><strong>Does Notre Dame's free tuition actually apply?</strong><br><br>
+    They cover full tuition under $150,000 — but they require the Noncustodial Parent CSS Profile,
+    so <strong>both parents' incomes count together</strong>, not just the one you live with.<br><br>
+    Nobody can answer this until both profiles are filed. It's the difference between Notre Dame
+    being the cheapest school here and one of the most expensive.
+    <strong>Parents' job, not yours.</strong></div>
+  <h2>Money deadlines</h2><div class="rule"></div>
+  <div class="scroll"><table id="moneyDates"></table></div>
+  <p class="tag">FAFSA Notre Dame 001840 · CSS Notre Dame 1841 · CSS Holy Cross 3282</p>
+  <h2>Music money — read once</h2><div class="rule"></div>
+  <div class="flag"><strong>Nearly every music scholarship requires declaring the music major.</strong>
+    Holy Cross Brooks is full tuition, majors only. Madison's waiver, majors only. NYU Steinhardt,
+    majors only.<br><br><strong>Still open without majoring:</strong> singing in the ensembles —
+    almost everywhere, including Madison's jazz groups and the Holy Cross jazz combo. And
+    <strong>Eau Claire</strong>, where jazz is open to every student.<br><br>
+    <strong>What that means:</strong> you don't need to chase auditions at eight schools this fall.
+    That whole workstream is off your plate.</div>
+</section>
+
+<section id="calls" hidden><h2>Who to call</h2><div class="rule"></div>
+  <div class="scroll"><table id="contactTable"></table></div>
+  <h2>Emails you can steal</h2><div class="rule"></div>
+  <details><summary>Asking a music department a question</summary><div class="inner">
+    <p><em>Subject: Prescreen timing — prospective first-year, jazz voice</em></p>
+    <p>Hi — I'm a senior applying for fall 2027 and I'm interested in jazz voice. Two questions:
+      when is the prescreen deadline for next fall's auditions, and are students who aren't music
+      majors eligible to audition for scholarships or ensembles? Thank you — [name], [school], [city]</p>
+    <p class="tag">Short. Two specific questions. They answer short emails.</p></div></details>
+  <details><summary>Requesting an interview</summary><div class="inner">
+    <p><em>Subject: Interview request — first-year applicant</em></p>
+    <p>Hi — I'm applying as a first-year student for fall 2027 and I'd like to request an interview.
+      I'm available [two or three real windows]. Thank you — [name], [school], [city]</p>
+    <p class="tag">Send in October. Slots fill.</p></div></details>
+  <details><summary>What not to send</summary><div class="inner">
+    <p>Don't email to say you submitted. Don't email to say you're still interested with nothing
+      else in the message. Don't email weekly. Contact them when you have a real question or real
+      news. Anything else reads as anxious, and admissions offices notice.</p></div></details>
+</section>
+
+<section id="after" hidden><h2>After Nov 1</h2><div class="rule"></div>
+  <div class="note">Submitting is halfway. Most of the money happens after this.
+    <strong>Don't read this now.</strong> It's here so it exists in November.</div>
+  <details><summary>November</summary><div class="inner"><ul>
+    <li>DePaul Early Action — Nov 15</li>
+    <li><strong>Notre Dame aid priority — Nov 15.</strong> FAFSA + CSS + IDOC</li>
+    <li>Notre Dame arts supplement via SlideRoom — Nov 15</li>
+    <li>Alumni interviews open at several schools</li></ul></div></details>
+  <details><summary>December — the big month</summary><div class="inner"><ul>
+    <li><strong>DePaul School of Music — Dec 1.</strong> Separate application, no early action</li>
+    <li>Holy Cross interview — by Dec 5</li>
+    <li><strong>Holy Cross net cost known — by Dec 20</strong>, before any binding decision</li>
+    <li>Write the Holy Cross supplements</li>
+    <li><strong>Notre Dame answers — mid-December</strong></li></ul></div></details>
+  <details><summary>The December decision</summary><div class="inner">
+    <p><strong>Notre Dame says yes</strong> → Holy Cross ED II is off. Apply Regular there if you
+      want two aid offers to compare.</p>
+    <p><strong>Notre Dame says no</strong> → Holy Cross ED II is your strongest move, if the cost works.</p>
+    <p><strong>Deferred</strong> → the hard one. You're still alive at Notre Dame, but ED II is
+      binding: get into Holy Cross and you withdraw from Notre Dame before they ever give you a
+      real answer. That's a values question, not a strategy question, and it's yours.</p>
+    <p><strong>The one rule:</strong> don't commit to anything binding until you know what it costs.</p></div></details>
+  <details><summary>January</summary><div class="inner"><ul>
+    <li>Minnesota Regular — Jan 1</li><li>Fordham Regular — Jan 3 <span class="unv">verify</span></li>
+    <li>Notre Dame Regular — Jan 4</li><li>NYU Regular — Jan 5</li>
+    <li><strong>Holy Cross ED II and Regular — Jan 15</strong></li>
+    <li>Mid-year report goes from your school</li></ul></div></details>
+  <details><summary>February – May</summary><div class="inner"><ul>
+    <li>~Feb — MN–WI reciprocity application opens. Separate. Don't miss it.</li>
+    <li>Feb 15 — Holy Cross ED II decision</li><li>Mar–Apr — DePaul music decisions</li>
+    <li>March — Notre Dame Regular Decision</li>
+    <li>Mar–Apr — admitted student days. Much better than a fall tour.</li>
+    <li>April — compare aid offers side by side. Appeal anything out of line.</li>
+    <li><strong>May 1 — deposit. Not before.</strong></li></ul></div></details>
+</section>
+
+<section id="parents" hidden>
+  <h2>For your parents</h2><div class="rule"></div>
+  <div class="note"><strong>This page is not for her.</strong> It's the money forms, the
+    deadlines that cost real dollars, and the things nobody has confirmed yet. None of it
+    belongs on a 17-year-old's to-do list.</div>
+  <div id="parentList"></div>
+
+  <h2>Confirm before anyone acts on it</h2><div class="rule"></div>
+  <div class="flag">Everything below came from research that could <strong>not</strong> be
+    confirmed against the school's own page. Dates and dollar figures in this app are only as
+    good as these calls. Tap one to see why it matters and who to ask.</div>
+  <div id="verifyList"></div>
+</section>
+
+<section id="words" hidden>
+  <h2>What these words mean</h2><div class="rule"></div>
+  <div class="note">Nobody is born knowing this vocabulary, and everyone in admissions talks
+    like you already do. If a word anywhere in here made no sense, it's probably below.</div>
+  <dl id="glossary"></dl>
+</section>
+
+<section id="save" hidden>
+  <h2>Your work is saved automatically</h2><div class="rule"></div>
+  <p>Everything you type saves to this browser the moment you type it. Bookmark this page and
+    come back any time — it'll all be here.</p>
+  <div class="note"><strong>One catch worth knowing.</strong> It saves to <em>this</em> browser on
+    <em>this</em> device. It won't follow you to your phone, and clearing your history erases it.
+    So once a week, hit <strong>Download backup</strong> and keep the file. Then you can restore it
+    anywhere, including a new computer.</div>
+  <p><button class="btn go" id="dlBackup">Download backup</button>
+     <button class="btn" id="upBackup">Restore from backup</button>
+     <input type="file" id="fileIn" accept=".json" hidden></p>
+
+  <h2>Print or export</h2><div class="rule"></div>
+  <p><strong>Excel spreadsheet</strong> — every checklist item, school, cost, contact, and all your
+    essay writing, on separate tabs. Good for your parents, and good as a second backup.</p>
+  <p><button class="btn" id="xlsx">Download Excel file</button></p>
+  <p><strong>PDF</strong> — opens your browser's print window. Choose <em>Save as PDF</em> as the
+    destination. Your essay drafts print with it.</p>
+  <p><button class="btn" id="printAll">Print everything as PDF</button>
+     <button class="btn" id="printWeek">Print this week only</button></p>
+
+  <h2>Start over</h2><div class="rule"></div>
+  <p class="tag">This erases every answer and draft on this device. Download a backup first.</p>
+  <p><button class="btn" id="wipe">Erase everything</button></p>
+</section>
+
+</main>
+</div>
+
+<div class="saved"><b id="saveState">Saved to this device</b>
+  <button id="quickSave">Download backup</button>
+  <span class="tag" style="margin-left:auto" id="nextUp"></span></div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
