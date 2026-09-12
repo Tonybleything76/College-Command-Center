@@ -1,0 +1,8 @@
+# Only the app ships. Research contains household financial details and
+# must not be published on a public URL.
+research/
+docs/
+src/
+app/
+README.md
+.gitignore
