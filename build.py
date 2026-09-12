@@ -5,7 +5,7 @@ One file means nothing can 404, and it works opened straight from disk.
 Output goes to index.html (repo root) and site/index.html so the page
 serves correctly whatever root directory the host is set to.
 """
-import re, pathlib
+import re, pathlib, datetime, subprocess
 root = pathlib.Path(__file__).parent
 src  = root / 'src'
 
@@ -18,6 +18,16 @@ js  = "\n".join(strip_modules(f) for f in
                 ['data.js', 'essays.js', 'xlsx.js', 'app.js'])
 css = (src / 'app.css').read_text()
 html = (src / 'index.html').read_text()
+
+# Stamp the build so anyone can tell at a glance which version they are
+# looking at - browser cache and stale deploys are otherwise invisible.
+try:
+    sha = subprocess.check_output(['git','rev-parse','--short','HEAD'],
+                                  cwd=root, text=True).strip()
+except Exception:
+    sha = 'local'
+stamp = datetime.datetime.now().strftime('%b %-d, %-I:%M %p') + '  ·  ' + sha
+html = html.replace('{{BUILD}}', stamp)
 html = re.sub(r'<link rel="stylesheet" href="app\.css">',
               lambda m: '<style>\n' + css + '\n</style>', html, count=1)
 html = re.sub(r'<script type="module" src="app\.js"></script>',
