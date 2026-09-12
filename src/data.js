@@ -154,6 +154,7 @@ export const SCHOOLS = [
     'Jazz Studies requires a prescreen from everyone, then a live audition — register by Jan 15.',
     'Music decisions not released until March–April.']},
   {n:'College of the Holy Cross', plan:'Early Decision II', due:'Jan 15', url:'https://www.holycross.edu/admissions-aid/how-to-apply', b:[
+    'Worcester, Massachusetts — about 45 miles west of Boston, roughly an hour by car or commuter rail. Not Holy Cross College in Notre Dame, Indiana, which is a different school.',
     'ED II is binding. Admitted means you go.',
     'Interviews highly recommended and actually used. Request in October, interview by Dec 5.',
     'Meets 100% of need. Full tuition grant at $100K or less.',
