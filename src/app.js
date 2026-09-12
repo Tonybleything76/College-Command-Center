@@ -229,6 +229,12 @@ document.addEventListener('click',ev=>{
     if(tab.dataset.t==='essays'&&!cur)drawEssayList();
     window.scrollTo(0,0); return;
   }
+  // Buttons inside a section that jump to another tab ("Go to Save & Print").
+  const jump=ev.target.closest('button[data-t]');
+  if(jump){
+    const nb=document.querySelector(`nav button[data-t="${jump.dataset.t}"]`);
+    if(nb){nb.click();return;}
+  }
   const pick=ev.target.closest('[data-essay]'); if(pick){openEssay(pick.dataset.essay);return;}
   if(ev.target.id==='essayBack'){closeEssay();return;}
   if(ev.target.id==='gNext'){
@@ -243,7 +249,18 @@ document.addEventListener('click',ev=>{
 });
 
 /* ---------- backup ---------- */
-function download(blob,name){
+/* Two ways to hand over a file. A plain <a download> works on a normal web
+   page but does nothing inside the Claude artifact viewer, which mediates
+   saves through its own permission prompt. Try that first, fall back to the
+   anchor everywhere else. */
+async function download(blob,name){
+  try{
+    const dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null;
+    if(dl){ await dl.save({filename:name, data:blob}); return; }
+  }catch(err){
+    if(err && err.code==='declined') return;           // viewer said no; not an error
+    // anything else: fall through to the ordinary download
+  }
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>URL.revokeObjectURL(a.href),1000);
@@ -269,6 +286,11 @@ document.getElementById('fileIn').onchange=ev=>{
     }catch(err){ alert("That file didn't look like a Callboard backup. Nothing was changed."); } };
   r.readAsText(f); ev.target.value='';
 };
+const savePage=document.getElementById('savePage');
+if(savePage)savePage.onclick=()=>download(
+  new Blob(['<!doctype html>\n'+document.documentElement.outerHTML],{type:'text/html'}),
+  'callboard.html');
+
 document.getElementById('wipe').onclick=()=>{
   if(!confirm('Erase every answer and draft on this device? This cannot be undone.'))return;
   if(!confirm('Really sure? Download a backup first if you have not.'))return;
@@ -342,3 +364,12 @@ window.addEventListener('afterprint',()=>{
 
 /* ---------- go ---------- */
 drawStatic(); drawToday(); drawTally(); drawRun(); drawEssayList();
+
+if(!S.seen){
+  S.seen=1; save();
+  const b=document.querySelector('nav button[data-t="start"]');
+  if(b){
+    document.querySelectorAll('nav button').forEach(x=>x.setAttribute('aria-selected',x===b));
+    document.querySelectorAll('main section').forEach(x=>x.hidden=x.id!=='start');
+  }
+}

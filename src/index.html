@@ -7,7 +7,7 @@
 <meta name="description" content="A guided workbench for nine college applications: today's three tasks, coached essay work, real costs, and everything exportable.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎭</text></svg>">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Work+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
@@ -20,6 +20,7 @@
 </header>
 
 <nav role="tablist" aria-label="Sections">
+  <button role="tab" aria-selected="false" data-t="start">Start Here</button>
   <button role="tab" aria-selected="true" data-t="today">Today's Call</button>
   <button role="tab" aria-selected="false" data-t="essays">Essays</button>
   <button role="tab" aria-selected="false" data-t="company">The Company</button>
@@ -33,6 +34,71 @@
 </nav>
 
 <main>
+
+<section id="start" hidden>
+  <h2>What this is</h2><div class="rule"></div>
+  <p>Nine college applications, broken into small pieces, in the order they
+    actually need to happen. It keeps track so you don't have to hold it all in your head.</p>
+  <div class="note"><strong>The whole idea:</strong> you open this, it tells you the two or
+    three things that matter today, you do one of them, you close it. That's it. It will
+    never show you all 21 things at once unless you go looking for them.</div>
+
+  <h2>You can take all of it with you</h2><div class="rule"></div>
+  <p>If you'd rather work on paper, in a spreadsheet, or on a computer with no internet —
+    you can. Nothing here is trapped on this page. All of it lives under
+    <strong>Save &amp; Print</strong>:</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Download</th><th>What you get</th><th>Good for</th></tr></thead><tbody>
+    <tr><td><strong>Excel file</strong></td>
+      <td>Six tabs: every task, every school, the costs, the contacts, and everything
+        you've written so far</td>
+      <td>Handing your parents the whole picture. Also a second copy of your writing.</td></tr>
+    <tr><td><strong>PDF</strong></td>
+      <td>The whole thing, or just this week, printed — your essay drafts included</td>
+      <td>Working on paper. Sticking this week on the fridge.</td></tr>
+    <tr><td><strong>Backup file</strong></td>
+      <td>Everything you've typed, in one small file</td>
+      <td>Moving your work to a different computer, or not losing it.</td></tr>
+    <tr><td><strong>This page itself</strong></td>
+      <td>The entire app as one file</td>
+      <td>Working somewhere with no internet. Double-click and it opens.</td></tr>
+    </tbody></table></div>
+  <p><button class="btn go" data-t="save">Go to Save &amp; Print</button></p>
+
+  <h2>Your work saves by itself</h2><div class="rule"></div>
+  <p>Every word you type saves the second you type it. You never hit a save button.
+    The bar at the bottom of the screen tells you when it last saved.</p>
+  <div class="note"><strong>The one catch:</strong> it saves to <em>this</em> browser on
+    <em>this</em> device. It won't follow you to your phone, and clearing your history erases
+    it. So once a week, hit <strong>Download backup</strong> and keep the file somewhere.</div>
+
+  <h2>What each tab does</h2><div class="rule"></div>
+  <div class="scroll"><table>
+    <thead><tr><th>Tab</th><th>What's there</th></tr></thead><tbody>
+    <tr><td><strong>Today's Call</strong></td><td>The two or three things to do now. Start here every time.</td></tr>
+    <tr><td><strong>Essays</strong></td><td>Every piece of writing, and a step-by-step that gets you from nothing to a draft.</td></tr>
+    <tr><td><strong>The Company</strong></td><td>The nine schools. Deadlines, costs, what each one cares about.</td></tr>
+    <tr><td><strong>Full Run</strong></td><td>Everything, by date. Only go here if you want to.</td></tr>
+    <tr><td><strong>Money</strong></td><td>What each school actually costs, which is not the number on their website.</td></tr>
+    <tr><td><strong>Contacts</strong></td><td>Who to email, and emails you can copy.</td></tr>
+    <tr><td><strong>After</strong></td><td>November onward. Ignore it until November.</td></tr>
+    <tr><td><strong>Parents</strong></td><td>Their forms and deadlines, not yours.</td></tr>
+    <tr><td><strong>Words</strong></td><td>Every confusing admissions word, explained normally.</td></tr>
+    </tbody></table></div>
+
+  <h2>Stuck on a task?</h2><div class="rule"></div>
+  <p>Most tasks have a <strong>Show me exactly how</strong> line under them. Tap it and you
+    get the actual steps — which website, which button, what to type. If a word doesn't make
+    sense, it's in <strong>Words</strong>.</p>
+
+  <h2>One rule about the essays</h2><div class="rule"></div>
+  <div class="flag">Nothing here writes your essays for you. It asks you questions, shows you
+    your own answers, and tells you which one is the essay — then you write it.<br><br>
+    Two reasons. Several of these schools make you sign that the writing is yours. And essays
+    written by somebody else read like everyone else's, which is the fastest way to be
+    forgotten. Yours won't be.</div>
+  <p><button class="btn go" data-t="today">OK, show me today</button></p>
+</section>
 
 <section id="today">
   <h2 id="hdrToday">You're called for three things</h2><div class="rule"></div>
@@ -198,6 +264,11 @@
     destination. Your essay drafts print with it.</p>
   <p><button class="btn" id="printAll">Print everything as PDF</button>
      <button class="btn" id="printWeek">Print this week only</button></p>
+
+  <h2>Take the whole page with you</h2><div class="rule"></div>
+  <p><strong>This page as a file</strong> — the entire app, saved to your computer. Open it by
+    double-clicking, works with no internet, keeps everything you've written.</p>
+  <p><button class="btn" id="savePage">Download this whole page</button></p>
 
   <h2>Start over</h2><div class="rule"></div>
   <p class="tag">This erases every answer and draft on this device. Download a backup first.</p>
