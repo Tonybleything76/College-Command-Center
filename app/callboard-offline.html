@@ -1,0 +1,1158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Callboard — College Applications</title>
+<meta name="description" content="A guided workbench for nine college applications: today's three tasks, coached essay work, real costs, and everything exportable.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎭</text></svg>">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{
+  --paper:#eaeae4; --sheet:#f5f5f0; --ink:#16191c; --dim:#6e7370; --rule:#d2d3cb;
+  --rose:#c4304a; --rose-wash:#f3e2e4; --teal:#1e5a57; --teal-wash:#dfe9e6;
+  --done:#2d6b4e; --soon:#a8631a;
+  --disp:Oswald,"Arial Narrow",sans-serif;
+  --body:"Source Sans 3",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#15181a;--sheet:#1e2225;--ink:#eceee8;--dim:#8f948f;--rule:#32383a;
+  --rose:#e8788b;--rose-wash:#332226;--teal:#6fb3ab;--teal-wash:#1b2a29;
+  --done:#6fb894;--soon:#d69a4e;}}
+:root[data-theme="dark"]{
+  --paper:#15181a;--sheet:#1e2225;--ink:#eceee8;--dim:#8f948f;--rule:#32383a;
+  --rose:#e8788b;--rose-wash:#332226;--teal:#6fb3ab;--teal-wash:#1b2a29;
+  --done:#6fb894;--soon:#d69a4e;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);
+  font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%}
+.sheet{max-width:780px;margin:0 auto;padding-inline:20px;padding-block:0 80px}
+.masthead{padding-block:24px 12px;border-bottom:3px solid var(--ink)}
+.eyebrow{font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+h1{font-family:var(--disp);font-weight:600;font-size:clamp(1.8rem,7vw,2.5rem);margin:.1em 0 .1em;
+  line-height:1;text-transform:uppercase;text-wrap:balance}
+.run{font-family:var(--mono);font-size:.7rem;color:var(--dim);display:flex;flex-wrap:wrap;gap:3px 14px}
+nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--rule);position:sticky;top:0;
+  background:var(--paper);z-index:9;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:0 0 auto;background:none;border:0;border-bottom:3px solid transparent;
+  font-family:var(--disp);font-size:.8rem;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--dim);padding:13px 13px;cursor:pointer;margin-bottom:-1px}
+nav button:hover{color:var(--ink)}
+nav button[aria-selected="true"]{color:var(--rose);border-bottom-color:var(--rose)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+section{padding-block:24px}
+h2{font-family:var(--disp);font-weight:500;font-size:1.02rem;letter-spacing:.11em;text-transform:uppercase;
+  margin:32px 0 4px;color:var(--teal)}
+h2:first-child{margin-top:0}
+.rule{height:1px;background:var(--rule);margin-bottom:16px}
+h3{font-family:var(--body);font-weight:600;font-size:1.01rem;margin:0;line-height:1.34}
+p{margin:.65em 0}
+/* call strips */
+.call{display:grid;grid-template-columns:62px 1fr;gap:0 15px;padding:16px 0;
+  border-bottom:1px solid var(--rule);align-items:start}
+.call:first-of-type{border-top:1px solid var(--rule)}
+.slot{font-family:var(--mono);font-size:.68rem;line-height:1.35;text-align:right;padding-top:3px;
+  color:var(--dim);font-variant-numeric:tabular-nums}
+.slot b{display:block;font-weight:700;font-size:.75rem;color:var(--ink)}
+.call.hot .slot b{color:var(--rose)} .call.soon .slot b{color:var(--soon)}
+.tick{display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+.tick input{appearance:none;width:21px;height:21px;flex:0 0 auto;margin:1px 0 0;border:2px solid var(--dim);
+  border-radius:3px;background:var(--sheet);cursor:pointer;position:relative}
+.tick input:checked{background:var(--done);border-color:var(--done)}
+.tick input:checked::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;
+  border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(42deg)}
+.call.off h3{text-decoration:line-through;opacity:.42} .call.off .why{display:none}
+.why{font-size:.89rem;color:var(--dim);margin-top:5px}
+.who{font-family:var(--mono);font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--teal);margin-top:6px}
+.dark-strip{margin:18px 0;padding:15px 17px;background:var(--ink);color:var(--paper)}
+.dark-strip .lbl{font-family:var(--disp);font-size:1.3rem;letter-spacing:.3em;text-transform:uppercase;font-weight:600}
+.dark-strip .sub{font-family:var(--mono);font-size:.7rem;opacity:.72;margin-top:3px}
+.note{background:var(--teal-wash);border-left:3px solid var(--teal);padding:14px 16px;margin:16px 0;font-size:.93rem}
+.flag{background:var(--rose-wash);border-left:3px solid var(--rose);padding:14px 16px;margin:16px 0;font-size:.93rem}
+.tally{font-family:var(--mono);font-size:.7rem;color:var(--dim);margin-top:20px;font-variant-numeric:tabular-nums}
+/* essay picker */
+.pick{display:block;width:100%;text-align:left;background:var(--sheet);border:1px solid var(--rule);
+  border-left:3px solid var(--rose);padding:15px 17px;margin-bottom:10px;cursor:pointer;font-family:inherit;
+  color:var(--ink)}
+.pick:hover{border-color:var(--teal);border-left-color:var(--rose)}
+.pick .t{font-family:var(--disp);font-size:1.08rem;font-weight:500;letter-spacing:.03em;text-transform:uppercase}
+.pick .s{font-family:var(--mono);font-size:.64rem;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);margin-top:3px}
+.pick .bar{height:4px;background:var(--rule);margin-top:10px}
+.pick .bar i{display:block;height:100%;background:var(--done)}
+.pick .pct{font-family:var(--mono);font-size:.64rem;color:var(--dim);margin-top:5px}
+/* guided walk */
+.steps{display:flex;gap:0;border-bottom:1px solid var(--rule);margin:18px 0 20px}
+.steps button{flex:1;background:none;border:0;border-bottom:3px solid transparent;font-family:var(--disp);
+  font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);padding:10px 4px;
+  cursor:pointer;margin-bottom:-1px}
+.steps button[aria-selected="true"]{color:var(--rose);border-bottom-color:var(--rose)}
+.steps button .n{display:block;font-family:var(--mono);font-size:.6rem;opacity:.7}
+.qcard{background:var(--sheet);border:1px solid var(--rule);padding:20px}
+.qnum{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--rose);
+  font-weight:700;margin-bottom:8px}
+.qtext{font-family:var(--body);font-size:1.14rem;font-weight:600;line-height:1.4;margin:0 0 6px}
+.qhint{font-size:.89rem;color:var(--dim);margin:0 0 4px}
+.qnav{display:flex;gap:8px;align-items:center;margin-top:14px;flex-wrap:wrap}
+.dots{display:flex;gap:5px;margin-left:auto}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--rule);display:block}
+.dots i.on{background:var(--rose)} .dots i.filled{background:var(--done)}
+textarea{width:100%;font-family:var(--body);font-size:.98rem;padding:12px;border:1px solid var(--rule);
+  background:var(--paper);color:var(--ink);resize:vertical;line-height:1.55;min-height:96px}
+textarea.draft{min-height:300px}
+.count{font-family:var(--mono);font-size:.66rem;color:var(--dim);text-align:right;margin-top:4px;
+  font-variant-numeric:tabular-nums}
+.count.over{color:var(--rose);font-weight:700}
+.material{background:var(--teal-wash);border-left:3px solid var(--teal);padding:14px 16px;margin:14px 0;font-size:.9rem}
+.material h4{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;
+  margin:0 0 8px;color:var(--teal)}
+.material dt{font-weight:600;margin-top:9px;font-size:.86rem}
+.material dd{margin:2px 0 0;color:var(--dim);white-space:pre-wrap}
+.promptbox{background:var(--sheet);border:1px solid var(--rule);padding:15px 17px;margin:12px 0;font-size:.95rem}
+.promptbox cite{font-style:normal;display:block;font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--dim);margin-top:9px}
+ol.shape{padding-left:20px;font-size:.94rem} ol.shape li{margin:.5em 0}
+details{border-bottom:1px solid var(--rule);padding:13px 0}
+summary{cursor:pointer;font-weight:600;font-size:.97rem;list-style:none;display:flex;gap:9px;align-items:baseline}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";font-family:var(--mono);color:var(--rose);font-weight:700}
+details[open] summary::before{content:"\2212"}
+.inner{padding:11px 0 4px 20px;font-size:.93rem}
+.inner ul{padding-left:19px;margin:.5em 0} .inner li{margin:.32em 0}
+.btn{font-family:var(--disp);font-size:.76rem;letter-spacing:.09em;text-transform:uppercase;padding:9px 15px;
+  border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;margin:4px 6px 4px 0;
+  display:inline-block;text-decoration:none}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.go{background:var(--rose);border-color:var(--rose);color:#fff}
+.btn.go:hover{background:var(--ink);border-color:var(--ink)}
+.btn[disabled]{opacity:.35;cursor:not-allowed}
+.tag{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.unv{color:var(--soon);font-family:var(--mono);font-size:.62rem;letter-spacing:.07em;text-transform:uppercase;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.chips button{font-family:var(--mono);font-size:.67rem;padding:5px 11px;border:1px solid var(--rule);
+  background:var(--sheet);color:var(--dim);cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--teal);color:var(--paper);border-color:var(--teal)}
+.day{font-family:var(--mono);font-size:.67rem;letter-spacing:.11em;text-transform:uppercase;color:var(--rose);
+  font-weight:700;margin:24px 0 2px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin:12px 0;min-width:430px}
+th{font-family:var(--mono);font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);
+  font-weight:400;text-align:left;padding:8px 10px 8px 0;border-bottom:2px solid var(--ink)}
+td{padding:9px 10px 9px 0;border-bottom:1px solid var(--rule);vertical-align:top;font-variant-numeric:tabular-nums}
+td:first-child{font-weight:600}
+.saved{position:fixed;bottom:0;left:0;right:0;background:var(--ink);color:var(--paper);
+  font-family:var(--mono);font-size:.66rem;padding:7px 20px;display:flex;gap:14px;flex-wrap:wrap;
+  align-items:center;z-index:20}
+.saved b{color:var(--paper);font-weight:400;opacity:.75}
+.saved .ok{color:#8fd6b0}
+.saved button{font-family:var(--mono);font-size:.64rem;letter-spacing:.05em;text-transform:uppercase;
+  background:none;border:1px solid rgba(255,255,255,.35);color:var(--paper);padding:3px 9px;cursor:pointer}
+.saved button:hover{background:var(--paper);color:var(--ink)}
+.printed{display:none;white-space:pre-wrap}
+@media (max-width:430px){.call{grid-template-columns:52px 1fr;gap:0 11px}body{font-size:16px}
+  .steps button{font-size:.64rem;padding:9px 2px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{
+  nav,.steps,.saved,.btn,.chips,.qnav,.dots{display:none!important}
+  body{background:#fff;color:#000;font-size:10.5pt}
+  .sheet{max-width:100%;padding:0}
+  section[hidden]{display:block!important}
+  section{page-break-before:always;padding-block:12pt}
+  section:first-of-type{page-break-before:avoid}
+  textarea{display:none} .printed{display:block;border:1px solid #bbb;padding:8pt;font-size:10pt}
+  details{border-bottom:1px solid #ccc} details .inner{display:block!important}
+  .note,.flag,.material,.promptbox{border:1px solid #bbb;background:#fff}
+  .dark-strip{background:#fff;color:#000;border:2px solid #000}
+  h2{color:#000} .call{page-break-inside:avoid}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:8pt;color:#555}
+}
+
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header class="masthead">
+  <div class="eyebrow">Rehearsal &amp; Performance Schedule</div>
+  <h1>The Callboard</h1>
+  <div class="run"><span>COMPANY: 9 SCHOOLS</span><span>FIRST CALL: NOV 1</span><span>OPENS: FALL 2027</span></div>
+</header>
+
+<nav role="tablist" aria-label="Sections">
+  <button role="tab" aria-selected="true" data-t="today">Today's Call</button>
+  <button role="tab" aria-selected="false" data-t="essays">Essays</button>
+  <button role="tab" aria-selected="false" data-t="company">The Company</button>
+  <button role="tab" aria-selected="false" data-t="run">Full Run</button>
+  <button role="tab" aria-selected="false" data-t="money">Money</button>
+  <button role="tab" aria-selected="false" data-t="calls">Contacts</button>
+  <button role="tab" aria-selected="false" data-t="after">After</button>
+  <button role="tab" aria-selected="false" data-t="save">Save &amp; Print</button>
+</nav>
+
+<main>
+
+<section id="today">
+  <h2 id="hdrToday">You're called for three things</h2><div class="rule"></div>
+  <div id="board">
+    <div class="call hot"><div class="slot"><b>SEP 13</b>30 min</div>
+      <label class="tick"><input type="checkbox" data-id="ca1">
+      <span><h3>Open the Common App. Check it says Fall 2027. Add all nine schools.</h3>
+      <div class="why">Once the schools are in, the app shows you every real deadline and requirement.</div>
+      <div class="who">Common App</div></span></label></div>
+  </div>
+  <div class="note"><strong>That's the entire call.</strong> Everything else is under Full Run and
+    it will still be there tomorrow. Don't go look at it.</div>
+  <div class="dark-strip"><div class="lbl">Dark</div>
+    <div class="sub">OCT 5–13 · TECH, PERFORMANCES, RECOVERY · NOTHING IS DUE FROM YOU</div></div>
+  <p class="tally" id="tally">Loading…</p>
+</section>
+
+<section id="essays" hidden>
+  <div id="essayHome">
+    <h2>Essay work</h2><div class="rule"></div>
+    <div class="flag"><strong>Here's how this works.</strong> You don't start with a blank page.
+      I ask you questions, you answer them badly and quickly, and then I show you that your
+      answers already contain the essay. Four steps each: gather, choose, draft, sharpen.<br><br>
+      <strong>I don't write any of it.</strong> Several of these schools make you sign that the
+      writing is yours — and ghostwritten essays read like everyone else's anyway. Yours won't.</div>
+    <div id="essayList"></div>
+    <h2>The reuse map</h2><div class="rule"></div>
+    <div class="note"><strong>Four of your nine are Catholic and read for the same thing</strong> —
+      Notre Dame, Holy Cross, Fordham, DePaul. One core idea, retold four times. Never pasted.<br><br>
+      <strong>Separate core:</strong> music identity — Madison, Minnesota, Eau Claire, NYU.<br><br>
+      <strong>Never shared:</strong> anything with a school's name in it.</div>
+  </div>
+  <div id="essayWalk" hidden></div>
+</section>
+
+<section id="company" hidden><h2>The company</h2><div class="rule"></div>
+  <p class="tag" style="margin-bottom:14px">Confirm anything marked unverified before you rely on it.</p>
+  <div id="schoolList"></div></section>
+
+<section id="run" hidden><h2>Full run</h2><div class="rule"></div>
+  <div class="chips" id="chips"></div><div id="runList"></div></section>
+
+<section id="money" hidden>
+  <h2>What things actually cost</h2><div class="rule"></div>
+  <div class="note"><strong>Sticker price is fiction.</strong> The expensive schools can end up
+    cheapest — the ones that cost $90K meet 100% of need and the ones that cost $30K don't.
+    Don't cross anything off because the top number scared you.</div>
+  <div class="scroll"><table id="moneyTable"></table></div>
+  <h2>The question that decides everything</h2><div class="rule"></div>
+  <div class="flag"><strong>Does Notre Dame's free tuition actually apply?</strong><br><br>
+    They cover full tuition under $150,000 — but they require the Noncustodial Parent CSS Profile,
+    so <strong>both parents' incomes count together</strong>, not just the one you live with.<br><br>
+    Nobody can answer this until both profiles are filed. It's the difference between Notre Dame
+    being the cheapest school here and one of the most expensive.
+    <strong>Parents' job, not yours.</strong></div>
+  <h2>Money deadlines</h2><div class="rule"></div>
+  <div class="scroll"><table id="moneyDates"></table></div>
+  <p class="tag">FAFSA Notre Dame 001840 · CSS Notre Dame 1841 · CSS Holy Cross 3282</p>
+  <h2>Music money — read once</h2><div class="rule"></div>
+  <div class="flag"><strong>Nearly every music scholarship requires declaring the music major.</strong>
+    Holy Cross Brooks is full tuition, majors only. Madison's waiver, majors only. NYU Steinhardt,
+    majors only.<br><br><strong>Still open without majoring:</strong> singing in the ensembles —
+    almost everywhere, including Madison's jazz groups and the Holy Cross jazz combo. And
+    <strong>Eau Claire</strong>, where jazz is open to every student.<br><br>
+    <strong>What that means:</strong> you don't need to chase auditions at eight schools this fall.
+    That whole workstream is off your plate.</div>
+</section>
+
+<section id="calls" hidden><h2>Who to call</h2><div class="rule"></div>
+  <div class="scroll"><table id="contactTable"></table></div>
+  <h2>Emails you can steal</h2><div class="rule"></div>
+  <details><summary>Asking a music department a question</summary><div class="inner">
+    <p><em>Subject: Prescreen timing — prospective first-year, jazz voice</em></p>
+    <p>Hi — I'm a senior applying for fall 2027 and I'm interested in jazz voice. Two questions:
+      when is the prescreen deadline for next fall's auditions, and are students who aren't music
+      majors eligible to audition for scholarships or ensembles? Thank you — [name], [school], [city]</p>
+    <p class="tag">Short. Two specific questions. They answer short emails.</p></div></details>
+  <details><summary>Requesting an interview</summary><div class="inner">
+    <p><em>Subject: Interview request — first-year applicant</em></p>
+    <p>Hi — I'm applying as a first-year student for fall 2027 and I'd like to request an interview.
+      I'm available [two or three real windows]. Thank you — [name], [school], [city]</p>
+    <p class="tag">Send in October. Slots fill.</p></div></details>
+  <details><summary>What not to send</summary><div class="inner">
+    <p>Don't email to say you submitted. Don't email to say you're still interested with nothing
+      else in the message. Don't email weekly. Contact them when you have a real question or real
+      news. Anything else reads as anxious, and admissions offices notice.</p></div></details>
+</section>
+
+<section id="after" hidden><h2>After Nov 1</h2><div class="rule"></div>
+  <div class="note">Submitting is halfway. Most of the money happens after this.
+    <strong>Don't read this now.</strong> It's here so it exists in November.</div>
+  <details><summary>November</summary><div class="inner"><ul>
+    <li>DePaul Early Action — Nov 15</li>
+    <li><strong>Notre Dame aid priority — Nov 15.</strong> FAFSA + CSS + IDOC</li>
+    <li>Notre Dame arts supplement via SlideRoom — Nov 15</li>
+    <li>Alumni interviews open at several schools</li></ul></div></details>
+  <details><summary>December — the big month</summary><div class="inner"><ul>
+    <li><strong>DePaul School of Music — Dec 1.</strong> Separate application, no early action</li>
+    <li>Holy Cross interview — by Dec 5</li>
+    <li><strong>Holy Cross net cost known — by Dec 20</strong>, before any binding decision</li>
+    <li>Write the Holy Cross supplements</li>
+    <li><strong>Notre Dame answers — mid-December</strong></li></ul></div></details>
+  <details><summary>The December decision</summary><div class="inner">
+    <p><strong>Notre Dame says yes</strong> → Holy Cross ED II is off. Apply Regular there if you
+      want two aid offers to compare.</p>
+    <p><strong>Notre Dame says no</strong> → Holy Cross ED II is your strongest move, if the cost works.</p>
+    <p><strong>Deferred</strong> → the hard one. You're still alive at Notre Dame, but ED II is
+      binding: get into Holy Cross and you withdraw from Notre Dame before they ever give you a
+      real answer. That's a values question, not a strategy question, and it's yours.</p>
+    <p><strong>The one rule:</strong> don't commit to anything binding until you know what it costs.</p></div></details>
+  <details><summary>January</summary><div class="inner"><ul>
+    <li>Minnesota Regular — Jan 1</li><li>Fordham Regular — Jan 3 <span class="unv">verify</span></li>
+    <li>Notre Dame Regular — Jan 4</li><li>NYU Regular — Jan 5</li>
+    <li><strong>Holy Cross ED II and Regular — Jan 15</strong></li>
+    <li>Mid-year report goes from your school</li></ul></div></details>
+  <details><summary>February – May</summary><div class="inner"><ul>
+    <li>~Feb — MN–WI reciprocity application opens. Separate. Don't miss it.</li>
+    <li>Feb 15 — Holy Cross ED II decision</li><li>Mar–Apr — DePaul music decisions</li>
+    <li>March — Notre Dame Regular Decision</li>
+    <li>Mar–Apr — admitted student days. Much better than a fall tour.</li>
+    <li>April — compare aid offers side by side. Appeal anything out of line.</li>
+    <li><strong>May 1 — deposit. Not before.</strong></li></ul></div></details>
+</section>
+
+<section id="save" hidden>
+  <h2>Your work is saved automatically</h2><div class="rule"></div>
+  <p>Everything you type saves to this browser the moment you type it. Bookmark this page and
+    come back any time — it'll all be here.</p>
+  <div class="note"><strong>One catch worth knowing.</strong> It saves to <em>this</em> browser on
+    <em>this</em> device. It won't follow you to your phone, and clearing your history erases it.
+    So once a week, hit <strong>Download backup</strong> and keep the file. Then you can restore it
+    anywhere, including a new computer.</div>
+  <p><button class="btn go" id="dlBackup">Download backup</button>
+     <button class="btn" id="upBackup">Restore from backup</button>
+     <input type="file" id="fileIn" accept=".json" hidden></p>
+
+  <h2>Print or export</h2><div class="rule"></div>
+  <p><strong>Excel spreadsheet</strong> — every checklist item, school, cost, contact, and all your
+    essay writing, on separate tabs. Good for your parents, and good as a second backup.</p>
+  <p><button class="btn" id="xlsx">Download Excel file</button></p>
+  <p><strong>PDF</strong> — opens your browser's print window. Choose <em>Save as PDF</em> as the
+    destination. Your essay drafts print with it.</p>
+  <p><button class="btn" id="printAll">Print everything as PDF</button>
+     <button class="btn" id="printWeek">Print this week only</button></p>
+
+  <h2>Start over</h2><div class="rule"></div>
+  <p class="tag">This erases every answer and draft on this device. Download a backup first.</p>
+  <p><button class="btn" id="wipe">Erase everything</button></p>
+</section>
+
+</main>
+</div>
+
+<div class="saved"><b id="saveState">Saved to this device</b>
+  <button id="quickSave">Download backup</button>
+  <span class="tag" style="margin-left:auto" id="nextUp"></span></div>
+
+<script>
+/* Single source of truth. The screen, the Excel export and the PDF all read from here. */
+
+const TASKS = [
+  {id:'ca1', s:'Common App', t:"Open the Common App. Check it says Fall 2027. Add all nine schools.", d:'2026-09-13', p:1, m:'30 min', w:"Once the schools are in, the app shows you every real deadline and requirement. That replaces the paper list entirely."},
+  {id:'ca2', s:'Common App', t:'Copy every essay prompt and word limit into a note', d:'2026-09-13', p:1, m:'20 min', w:'Twenty minutes, and it unlocks half of this board. Most prompts are only visible inside the Common App once a school is added.'},
+  {id:'nd1', s:'Notre Dame', t:'Write the Notre Dame faith answer', d:'2026-09-16', p:1, m:'75 words', w:"The smallest real thing on the whole list, for the school you actually want. You've said this out loud from a pulpit. Start here."},
+  {id:'rec1', s:'Common App', t:'Invite your counselor and two teachers as recommenders', d:'2026-09-18', p:1, m:'15 min', w:'This runs on their calendar, not yours. Most common reason a Nov 1 application misses.'},
+  {id:'mus1', s:'UW–Madison', t:'Email admissions@music.wisc.edu about the jazz voice prescreen date', d:'2026-09-18', p:1, m:'10 min', w:'Last year the prescreen was due Oct 31 — before the application. If that repeats it changes your whole October.'},
+  {id:'act1', s:'Common App', t:'Fill in Activities — 10 slots, 150 characters each', d:'2026-09-20', p:2, m:'90 min', w:'Most underrated part of the application. NHS president, softball, musicals, preaching team.'},
+  {id:'hon1', s:'Common App', t:'Fill in Honors — Jerry nomination, 3rd globally at the Great Shake', d:'2026-09-20', p:2, m:'30 min', w:'Outside recognition is worth more than another activity line. Almost nobody has this.'},
+  {id:'tri1', s:'Essays', t:'Sort your four drafts: alive, dead, or wrong shape', d:'2026-09-20', p:2, m:'60 min', w:'One alive draft saves two weeks. Be honest, not loyal.'},
+  {id:'ps1', s:'Essays', t:'Personal statement — good enough to build on', d:'2026-09-30', p:1, m:'650 words', w:'Not finished. Not perfect. Good enough that supplements can start. This date governs everything.'},
+  {id:'nd2', s:'Notre Dame', t:'Write the 150-word non-negotiables essay', d:'2026-10-02', p:2, m:'150 words', w:''},
+  {id:'nd3', s:'Notre Dame', t:'Write the second short answer — #2, #3, or #4', d:'2026-10-02', p:2, m:'100 words', w:'#4 "What would you fight for?" is the sleeper. Nobody answers it well.'},
+  {id:'hc1', s:'Holy Cross', t:'Request your Holy Cross interview', d:'2026-10-02', p:2, m:'10 min', w:'Ten minutes now. Interviews there count, and slots fill.'},
+  {id:'fa1', s:'Money', t:'Parents: file FAFSA + CSS Profile, both parents', d:'2026-10-05', p:1, m:'parents', w:'Opens Oct 1. Notre Dame needs both parents on the CSS — it decides whether free tuition applies.'},
+  {id:'ck1', s:'Notre Dame', t:'Checkpoint: is the Notre Dame application genuinely strong?', d:'2026-10-15', p:1, m:'decide', w:'If it is not, switch to Regular Decision. An early read of a weak application is a wasted shot.'},
+  {id:'wi1', s:'UW–Madison', t:'Write the Why Madison essay', d:'2026-10-16', p:2, m:'', w:'You spent a summer there. Use it specifically. Do not recycle the Notre Dame essay.'},
+  {id:'mn1', s:'Minnesota', t:'Write the Minnesota supplements, if they are required', d:'2026-10-16', p:2, m:'300 words', w:''},
+  {id:'fd1', s:'Fordham', t:'Write the Fordham supplement — optional, do it anyway', d:'2026-10-18', p:2, m:'300 words', w:'Optional means optional for them.'},
+  {id:'sub1', s:'Minnesota', t:'SUBMIT Minnesota', d:'2026-10-20', p:1, m:'places', w:'First one out. Easiest. Take the win.'},
+  {id:'sub2', s:'UW–Madison', t:'SUBMIT UW–Madison', d:'2026-10-22', p:1, m:'places', w:''},
+  {id:'sub3', s:'Fordham', t:'SUBMIT Fordham', d:'2026-10-27', p:1, m:'places', w:''},
+  {id:'sub4', s:'Notre Dame', t:'SUBMIT Notre Dame', d:'2026-10-27', p:1, m:'places', w:'Five days before the deadline. Not on deadline day — that is how portal disaster stories start.'}
+];
+
+const SCHOOLS = [
+  {n:'Notre Dame', plan:'Restrictive Early Action', due:'Nov 1', url:'https://admissions.nd.edu/apply/', b:[
+    'Decision mid-December. Non-binding — you still have until May 1.',
+    'REA carries priority for merit scholarships.',
+    'Test-optional this cycle. With a 31, seriously consider not sending it — it sits below their range.',
+    'Whole supplement is about 350 words. Smaller than it feels.',
+    'Free tuition under $150K — both parents’ incomes combined.',
+    'Arts supplement through SlideRoom, due Nov 15.']},
+  {n:'UW–Madison', plan:'Early Action', due:'Nov 1', url:'https://admissions.wisc.edu/apply-as-a-freshman/', b:[
+    'Supporting materials due Nov 10.',
+    'Jazz ensembles open to any student, any major, by audition.',
+    'Jazz Studies major exists if you want it.',
+    'Demonstrated interest: not considered. A campus visit does not register.',
+    'Bucky’s Tuition Promise caps at $65K AGI — does not apply.']},
+  {n:'Fordham', plan:'Early Action', due:'Nov 1', url:'https://www.fordham.edu/undergraduate-admission/apply/dates-and-deadlines/', b:[
+    '"Priority Performance" is theatre and dance only — not music.',
+    'Fordham theatre is a separate track with its own prescreen. Decide now, not in November.',
+    'Supplement optional, 300 words, 1 of 3.',
+    'Expensive and not especially generous with aid.']},
+  {n:'Minnesota', plan:'Early Action I', due:'Nov 1', url:'https://admissions.tc.umn.edu/', b:[
+    'Nov 1 is also the scholarship priority deadline and gates competitive majors.',
+    'Wisconsin reciprocity applies — about $38,226 total.',
+    'Reciprocity needs its own separate application, opening around Feb 2027.',
+    'Demonstrated interest: not considered.']},
+  {n:'DePaul', plan:'Early Action', due:'Nov 15', url:'https://www.depaul.edu/admission/undergraduate-admission/deadlines', b:[
+    'Decision by Dec 15.',
+    'WARNING: the School of Music has its own Dec 1 deadline with no early action.',
+    'Jazz Studies requires a prescreen from everyone, then a live audition — register by Jan 15.',
+    'Music decisions not released until March–April.']},
+  {n:'College of the Holy Cross', plan:'Early Decision II', due:'Jan 15', url:'https://www.holycross.edu/admissions-aid/how-to-apply', b:[
+    'ED II is binding. Admitted means you go.',
+    'Interviews highly recommended and actually used. Request in October, interview by Dec 5.',
+    'Meets 100% of need. Full tuition grant at $100K or less.',
+    'Brooks music scholarship is full tuition — music majors only.',
+    'Jazz combo and private voice lessons open to non-majors.']},
+  {n:'NYU', plan:'Regular Decision', due:'Jan 5', url:'https://www.nyu.edu/admissions/undergraduate-admissions.html', b:[
+    'Most expensive here at ~$101,000, and historically does not meet full need.',
+    'Steinhardt for jazz voice, Tisch for musical theatre — separate applications and reviews.',
+    'Steinhardt jazz talent awards are automatic, but require applying to the major.',
+    'Demonstrated interest: considered.',
+    'Honest read: a reach with a bad payout structure. Do not over-invest.']},
+  {n:'UW–Eau Claire', plan:'Regular', due:'Feb 1', url:'https://www.uwec.edu/admissions/', b:[
+    'Cheapest on the list — $19,933 billed.',
+    '"All Blugolds are welcome to audition" — jazz is open to every student.',
+    'No jazz degree; jazz is co-curricular. You sing without majoring.',
+    'Possibly the best value here for what you actually want.']},
+  {n:'Winona State', plan:'Undecided', due:'TBD', url:'https://www.winona.edu/admissions/', b:[
+    'Still an open decision — in or out?',
+    'Wisconsin students get the resident rate through reciprocity.',
+    'Costs unverified.']}
+];
+
+const MONEY = [
+  {n:'Notre Dame', sticker:'~$91,986', rule:'Under $150K = free tuition. Under $60K = tuition, fees, housing, food.', need:'100%, no loans'},
+  {n:'College of the Holy Cross', sticker:'$91,740', rule:'$100K or less + reasonable assets = full tuition', need:'100%'},
+  {n:'NYU', sticker:'$100,998', rule:'None', need:'No'},
+  {n:'Fordham', sticker:'~$85,000', rule:'None', need:'Not confirmed'},
+  {n:'Minnesota', sticker:'$38,226', rule:'Wisconsin reciprocity rate', need:'No'},
+  {n:'UW–Madison', sticker:'~$30,644 (2025–26)', rule:"Bucky's Promise = $65K AGI. Does not apply.", need:'No'},
+  {n:'UW–Eau Claire', sticker:'$19,933', rule:'WI Promise = $55K AGI. Does not apply.', need:'No'},
+  {n:'DePaul', sticker:'UNVERIFIED', rule:'None found', need:'No'},
+  {n:'Winona State', sticker:'~$20,146 (prior cycle)', rule:'Reciprocity', need:'No'}
+];
+
+const MONEY_DATES = [
+  {d:'Oct 1, 2026', w:'FAFSA and CSS Profile both open'},
+  {d:'Nov 15, 2026', w:'Notre Dame aid priority — FAFSA + CSS + IDOC. Miss this and you lose money.'},
+  {d:'Jan 15, 2027', w:'Notre Dame Regular Decision aid priority'},
+  {d:'~Feb 2027', w:'MN–WI reciprocity application opens. Separate from admission. Easy to miss.'}
+];
+
+const CONTACTS = [
+  {w:'Notre Dame', c:'admissions@nd.edu · 574-631-7505', f:'Arts supplement'},
+  {w:'UW–Madison Music', c:'admissions@music.wisc.edu', f:'Jazz voice prescreen date — this week'},
+  {w:'Holy Cross', c:'admissions@holycross.edu · 508-793-2443', f:'Interview — ask in October'},
+  {w:'Holy Cross aid', c:'financialaid@holycross.edu · 508-793-2265', f:'Net cost before December'},
+  {w:'DePaul Music', c:'musicadmissions@depaul.edu · 773-325-7444', f:'Dec 1 music deadline'},
+  {w:'NYU Tisch', c:'tisch.drama.ug@nyu.edu', f:'Artistic review'}
+];
+
+/* Essay slots. `key` matches the textarea id used for saving. */
+const PROMPTS = [
+  {key:'faith', school:'Notre Dame', lim:100, req:'Required (pick 2 of 4)',
+   text:'How does faith influence the decisions you make?'},
+  {key:'nonneg', school:'Notre Dame', lim:150, req:'Required',
+   text:"Everyone has different priorities when considering their higher education options and building their college or university list. Tell us about your 'non-negotiable' factor(s) when searching for your future college home."},
+  {key:'sa2', school:'Notre Dame', lim:100, req:'Required (pick 2 of 4)',
+   text:'Choose one — 2. What is distinctive about your personal experiences and development…?  3. …How do you foster service to others in your community?  4. What would you fight for?'},
+  {key:'ps', school:'All nine (Common App)', lim:650, req:'Required',
+   text:'Common App personal statement. Good enough to build on by Sept 30.'},
+  {key:'ford', school:'Fordham', lim:300, req:'Optional — do it anyway',
+   text:'Choose 1 of 3. VERIFY current text in the Common App.'},
+  {key:'wisc', school:'UW–Madison', lim:650, req:'Required',
+   text:'Why Madison. VERIFY current text in the Common App.'},
+  {key:'umn', school:'Minnesota', lim:300, req:'Conflict — check Common App',
+   text:"Minnesota's own checklist says essays are not required for admission. Other sources list two 150-word prompts."}
+];
+
+/* The coaching content. Every essay is a four-step walk:
+   GATHER (she answers small concrete questions) -> CHOOSE (which material is
+   strongest, and why) -> DRAFT (structure, with her own material pinned beside it)
+   -> SHARPEN (revision questions aimed at her actual draft).
+   No step writes anything for her. Every step gives her something to react to. */
+
+const ESSAYS = [
+{
+  key:'faith', school:'Notre Dame', limit:100, due:'2026-09-16',
+  title:'The faith answer',
+  prompt:'How does faith influence the decisions you make?',
+  meta:'Notre Dame · 50–100 words · pick 2 of 4 short answers · this is one of them',
+  why:"Start here. It's the smallest real thing on your whole list, it's for the school you most want, and you've already answered it out loud in front of people. 75 words. You can do this today.",
+  asking:"Not what you believe. What your belief makes you DO. They are asking for evidence, and most applicants hand them a definition instead.",
+  failure:"Describing faith in general — what it is, why it matters, how it guides people. They know all that. Ninety percent of the answers to this prompt could have been written by someone who has never met you.",
+  gather:[
+    {q:"Name one decision you made in the last year where faith actually changed what you did.",
+     h:"Not a decision you'd have made anyway. One where it tipped you. Just name the decision — a sentence."},
+    {q:"What did you actually do? Write it like a stage direction.",
+     h:"Only the action. 'I stayed after and helped clean up.' 'I told her I disagreed.' No feelings yet."},
+    {q:"What would you have done if faith weren't part of your life?",
+     h:"Be honest. If the answer is 'the same thing,' go back to question 1 and pick a different decision."},
+    {q:"Who else was in the room, and what did it cost you?",
+     h:"Time, a friendship, being the only one, looking uncool. Cost is what makes it evidence."},
+    {q:"When you're preparing to preach, what are you actually trying to do to the people listening?",
+     h:"You know this one. Answer it the way you'd say it to a friend, not the way you'd write it."},
+    {q:"Where have you doubted — and what did you do with the doubt?",
+     h:"Doubt is not disqualifying at Notre Dame. It's interesting. Most applicants hide it, which is why it stands out."}
+  ],
+  choose:{
+    lead:"Look at what you just wrote.",
+    body:["Answers 1–4 are a <strong>story</strong>. Answers 5–6 are <strong>ideas about faith</strong>.",
+      "Notre Dame receives thousands of essays full of ideas about faith. They receive very few with one specific afternoon in them.",
+      "<strong>Take the story.</strong> If 5 or 6 gave you one sharp sentence, it can be your last line — but it cannot be the essay."]
+  },
+  shape:[
+    "Open <em>inside</em> the decision. First sentence, no wind-up, no 'Throughout my life.'",
+    "Say what you did, concretely, in the words from question 2.",
+    "One sentence — one — on where faith was in that room.",
+    "Stop. Do not explain the lesson. They can see it, and explaining it is what makes an answer sound seventeen.",
+    "Aim for 75–90 words. Under the limit is fine. Over is not."
+  ],
+  sharpen:[
+    {q:"Read it out loud. Mark the exact place you stop sounding like yourself.",
+     h:"That sentence is almost always the one you wrote to sound impressive. Cut it or say it the way you just said it out loud."},
+    {q:"Underline every sentence that could appear in anyone else's answer. How many?",
+     h:"If it's more than one, you have a generic essay with a specific moment buried in it."},
+    {q:"Is there a specific moment in your first fifteen words? Yes or no.",
+     h:"If no, find the moment and move it to the front. Delete whatever was there."},
+    {q:"Did you write a sentence explaining what it taught you? Quote it here, then delete it from the draft.",
+     h:"Trust them. This single deletion improves most short answers."},
+    {q:"Count the words describing faith in general vs. words describing what you did.",
+     h:"The second number should be bigger. If it isn't, you wrote the definition after all."}
+  ]
+},
+{
+  key:'nonneg', school:'Notre Dame', limit:150, due:'2026-10-02',
+  title:'The non-negotiables essay',
+  prompt:"Everyone has different priorities when considering their higher education options and building their college or university list. Tell us about your 'non-negotiable' factor(s) when searching for your future college home.",
+  meta:'Notre Dame · 150 words max · required',
+  why:"Do this after the faith answer. It's three times longer but you'll already be moving.",
+  asking:"Whether you know yourself well enough to have real criteria — and whether those criteria happen to describe them. The fit should be obvious without you ever pointing at it.",
+  failure:"Listing what's great about Notre Dame. They know what's great about Notre Dame. An essay that flatters them tells them nothing about you, and they read it as a student who hasn't thought about what they need.",
+  gather:[
+    {q:"List three things a college must have for you. Just list them. Don't explain yet.",
+     h:"Fast. First three. You can throw one out later."},
+    {q:"For each one — what happened that made you know that?",
+     h:"A specific experience, not a belief. 'The summer program in Madison' beats 'I value music.'"},
+    {q:"Which of the three would you actually turn down an acceptance over?",
+     h:"Only one. That's your non-negotiable. The other two are preferences, and preferences are not what they asked for."},
+    {q:"Where have you already had the thing you're describing, even briefly?",
+     h:"A rehearsal room. A summer program. A class. Your school. That's the proof the criterion is real."},
+    {q:"What's something most people want out of college that you genuinely don't care about?",
+     h:"Big sports, a city, a famous name, a big school. This one is often the strongest opening line in the whole essay — the thing you don't want reveals more than the thing you do."}
+  ],
+  choose:{
+    lead:"One non-negotiable, done well, beats three listed.",
+    body:["Take your answer to question 3. That's the essay.",
+      "Your answer to question 5 is very likely your opening line — it's specific, a little contrarian, and it signals you've actually thought rather than performed.",
+      "Question 4 is your evidence. Without it this is an opinion; with it, it's a criterion."]
+  },
+  shape:[
+    "Name the non-negotiable in the first sentence. Or open with what you <em>don't</em> need, then name it.",
+    "Give the experience that taught you — briefly, concretely, one moment.",
+    "One clause on what it would look like where they are. One clause. Not a paragraph, and no flattery.",
+    "150 words moves fast. You have room for one idea and one piece of evidence."
+  ],
+  sharpen:[
+    {q:"Paste your draft into your head with a different school's name. Does it still work?",
+     h:"If yes, you wrote a generic essay. The fix is more of YOUR experience, not more about them."},
+    {q:"Find every sentence that compliments Notre Dame. Quote them here.",
+     h:"Now cut them from the draft. Watch how much room you get back."},
+    {q:"Is your non-negotiable something a normal 17-year-old would say?",
+     h:"'Good academics' and 'a strong community' are everyone's. What is yours actually about?"},
+    {q:"Where is your specific evidence? Quote the sentence.",
+     h:"If you can't find one, the essay is currently an opinion piece."}
+  ]
+},
+{
+  key:'sa2', school:'Notre Dame', limit:100, due:'2026-10-02',
+  title:'The second short answer',
+  prompt:'Pick ONE — (2) What is distinctive about your personal experiences and development (eg, family support, culture, disability, personal background, community)? Why are these experiences important to you and how will you enrich the Notre Dame community?  ·  (3) Notre Dame\'s undergraduate experience is characterized by a collective sense of care for every person. How do you foster service to others in your community?  ·  (4) What would you fight for?',
+  meta:'Notre Dame · 50–100 words · you answer two of four; the faith one is your first',
+  why:"Whichever you pick, it must do something your faith answer doesn't. Two answers about service wastes one of them.",
+  asking:"Range. They already have one answer from you. This one should show a different side — a different setting, a different register, a different part of your life.",
+  failure:"Picking #3 because it's safest. Everyone picks #3. It's the most crowded question on the page, and 'I volunteer and it taught me empathy' is the single most common paragraph in American college admissions.",
+  gather:[
+    {q:"#4 first — what makes you angry that doesn't make most people around you angry?",
+     h:"Small and real beats large and noble. 'When people talk through someone's solo' is a better start than 'injustice.'"},
+    {q:"What have you already argued for out loud, in front of people who disagreed?",
+     h:"You have a preaching team and an NHS presidency. Something has come up."},
+    {q:"What would you defend even knowing you'd lose?",
+     h:"That's what 'fight for' actually means. Conviction without stakes is just an opinion."},
+    {q:"Now #2 — name something about your background that shaped you and that you'd have to explain to a stranger.",
+     h:"Only answer this if something real comes up in under a minute. If you're straining, #2 isn't your question."},
+    {q:"And #3 — where do you serve when nobody's tracking hours?",
+     h:"Not the résumé version. The part nobody gives you credit for."}
+  ],
+  choose:{
+    lead:"Take the one you've already ACTED on.",
+    body:["<strong>#4 is the sleeper.</strong> Almost nobody answers it well, and it rewards conviction plus evidence — which is exactly what a person with a preaching background has and most applicants don't.",
+      "<strong>#3 is safe and crowded.</strong> Take it only if your answer to question 5 is something genuinely unusual.",
+      "<strong>#2 only if it wrote itself.</strong> If you strained, it isn't yours.",
+      "And check it against your faith answer: different setting, different part of your life. Range is the point."]
+  },
+  shape:[
+    "Name the thing in the first six words. In 80 words you cannot afford a run-up.",
+    "One concrete instance where you acted on it — not a hypothetical.",
+    "Stop. Seriously. The urge to add a closing thought is what ruins short answers."
+  ],
+  sharpen:[
+    {q:"Circle your abstractions — justice, kindness, equality, community. Quote them here.",
+     h:"Those are everyone's words. Replace each with the specific thing you actually mean."},
+    {q:"Does this answer overlap with your faith answer? Where?",
+     h:"If both are about service, change one. They're reading them together."},
+    {q:"Is there one sentence only you could have written? Quote it.",
+     h:"If there isn't one, that's the whole problem — and the fix is a smaller, more specific detail."}
+  ]
+},
+{
+  key:'ps', school:'All nine schools', limit:650, due:'2026-09-30',
+  title:'The Common App personal statement',
+  prompt:'Your personal statement goes to every school on your list. 650 words.',
+  meta:'All nine schools · 650 words · good enough to build on by SEPT 30',
+  why:"The most valuable thing you'll write, and the hardest — which is exactly why it's not first. Do the Notre Dame short answers first and come at this with momentum.",
+  asking:"How you think. Not what you've achieved — they have your transcript and activities list for that. This essay is the only place they hear your actual mind working.",
+  failure:"The achievement essay ('I worked hard and succeeded'), the lesson essay ('and that's when I learned'), and the résumé-in-prose. All three make a reader stop paying attention by paragraph two.",
+  gather:[
+    {q:"You already have four rough drafts. For each, write one line: ALIVE, DEAD, or WRONG SHAPE.",
+     h:"ALIVE = something real in here even if the writing is bad. DEAD = topic isn't going anywhere. WRONG SHAPE = good material, wrong story around it. One alive draft saves you two weeks. Be honest, not loyal."},
+    {q:"What were you wrong about, and what changed your mind?",
+     h:"Changing your mind on the page is the single most reliable thing an essay can do."},
+    {q:"When have you been the only one who noticed something?",
+     h:"Noticing is a kind of intelligence that transcripts don't record."},
+    {q:"What do you do when nobody assigns it?",
+     h:"The honest answer, including if it's small or strange."},
+    {q:"Describe a moment on stage, or preaching, where something real happened that wasn't in the script.",
+     h:"You have more of these than most applicants will ever have. Pick the one you still think about."},
+    {q:"Where do the pieces of you not fit together?",
+     h:"Neuroscience and jazz voice. Softball and preaching. The tension is usually the essay — not the resolution of it, the tension itself."},
+    {q:"What's something you're good at that you never chose?",
+     h:""},
+    {q:"What would your closest friend say you're like that you'd never say about yourself?",
+     h:"Go ask them. Seriously — text them right now and paste the answer."}
+  ],
+  choose:{
+    lead:"Which answer did you write the most for, without trying?",
+    body:["That's usually the essay. Not the most impressive answer — the one that came out of you.",
+      "Check it against three things: is there a <strong>specific moment</strong> you can see? Is there something you <strong>actually thought</strong>, not just felt? Could <strong>only you</strong> have written it?",
+      "If your material passes all three, you have an essay. If it only passes the first, you have an anecdote — keep digging.",
+      "And if one of your four old drafts is ALIVE and covers this material, start from that draft. Don't start over out of pride."]
+  },
+  shape:[
+    "<strong>Open in a scene.</strong> A specific moment, in progress. No context paragraph first — context can come second.",
+    "<strong>Then think on the page.</strong> This is the part most applicants skip and the part admissions readers are actually reading for.",
+    "<strong>Show the turn.</strong> What you understood, or stopped understanding, or now hold differently.",
+    "<strong>Land small.</strong> Return to something concrete. Do not end on a moral.",
+    "650 is a maximum, not a target. A tight 550 beats a padded 640."
+  ],
+  sharpen:[
+    {q:"Reverse-outline it. One line per paragraph saying what that paragraph DOES — not what it says.",
+     h:"'Sets the scene.' 'Complicates it.' 'Changes my mind.' If two paragraphs do the same job, cut one."},
+    {q:"Read only your first 50 words. Would you keep reading if it weren't yours?",
+     h:"Be brutal. The first 50 words decide whether the rest gets read properly."},
+    {q:"How many sentences describe what you THOUGHT, versus what happened?",
+     h:"If thinking is under a third, it's a story, not an essay. They want the mind."},
+    {q:"Find your last sentence. Does it announce a lesson?",
+     h:"If it does, delete it and see whether the one before it is a better ending. It usually is."},
+    {q:"Could another strong student at your school have written this essay?",
+     h:"If yes, name the one detail that's unmistakably yours and build more of the essay around it."},
+    {q:"Give it to one person who knows you and ask: does this sound like me?",
+     h:"That's the only outside opinion you need. Not 'is it good.' Does it sound like you."}
+  ]
+},
+{
+  key:'wisc', school:'UW–Madison', limit:650, due:'2026-10-16',
+  title:'Why Madison',
+  prompt:'Tell us why you would like to attend the University of Wisconsin–Madison.',
+  meta:'UW–Madison · verify exact wording and limit in the Common App',
+  why:"You have an advantage almost no other applicant has here, and it's easy to waste.",
+  asking:"Whether you know what you'd actually do there. Specific and checkable beats enthusiastic every time.",
+  failure:"Recycling your Notre Dame non-negotiables essay with the name swapped. Readers catch that instantly. Also: praising the campus, the Badgers, or the 'vibrant community.'",
+  gather:[
+    {q:"You spent a summer there for vocal performance. What do you know about that campus that you could only know by being there?",
+     h:"A room. A walk. A person. Something small and true. This is the whole advantage."},
+    {q:"Their jazz ensembles are open to any student, any major, by audition. What would you actually do with that?",
+     h:"Name the thing. This is checkable and specific, which is what this essay rewards."},
+    {q:"What would you study there, and what's the one class or question you'd chase?",
+     h:"Neuroscience. Get one level more specific than the major name."},
+    {q:"What did that summer change about how you think about singing?",
+     h:""}
+  ],
+  choose:{lead:"Lead with the summer.",
+    body:["Almost every applicant writes about a campus they toured for three hours. You lived there.",
+      "Pair it with the jazz-ensemble fact — a real, checkable, non-major opportunity you intend to use.",
+      "That combination is specific, verifiable, and about you. That's the whole assignment."]},
+  shape:[
+    "Open with the summer — a moment, not a summary.",
+    "What it showed you about how you want to work.",
+    "What you'd do there now, naming the specific thing.",
+    "No flattery. Not one sentence of it."
+  ],
+  sharpen:[
+    {q:"Could this paragraph go to Minnesota with the name changed?",
+     h:"If yes, it's not done. Add the thing only you saw."},
+    {q:"How many named, checkable specifics are in it? List them.",
+     h:"Two or three real ones beats a page of enthusiasm."}
+  ]
+},
+{
+  key:'ford', school:'Fordham', limit:300, due:'2026-10-18',
+  title:'Fordham supplement',
+  prompt:'Optional — choose 1 of 3. Option C: "At Fordham, we expect students to care for and engage with their communities and be active citizens for positive change. Please share an experience you had that caused you to develop a new perspective, change your point of view, and/or empower you to take an action or be courageous…"',
+  meta:'Fordham · 300 words · marked optional · VERIFY current text in the Common App',
+  why:"It says optional. Optional means optional for THEM. Do it.",
+  asking:"The same Jesuit question Notre Dame and Holy Cross ask in different words — what you do for other people and why.",
+  failure:"Leaving it blank because it says optional.",
+  gather:[
+    {q:"Which material from your Notre Dame answers could carry a longer version?",
+     h:"This is the reuse map working. Four of your schools are Catholic and read for the same thing — but the story gets retold, never pasted."},
+    {q:"What changed your mind about something involving other people?",
+     h:"Option C rewards a real change, not a confirmation of what you already believed."},
+    {q:"What did you do differently afterward?",
+     h:"'Empower you to take an action' — they want the action, not the realization."}
+  ],
+  choose:{lead:"Use the core, rewrite the telling.",
+    body:["Your service-and-faith material works here. But 300 words is double Notre Dame's space, so the version they get is fuller, not longer-winded.",
+      "If your Notre Dame answer was the decision, this one can be what came after it."]},
+  shape:["The experience, concretely.","What actually shifted.","What you did next — this is the part option C is really asking for."],
+  sharpen:[
+    {q:"Is this a copy of a Notre Dame answer? Where does it differ?",
+     h:"Same material is fine. Same sentences are not."},
+    {q:"Did you include the action, or stop at the realization?",
+     h:"Stopping at the realization is the most common way this prompt gets half-answered."}
+  ]
+}
+];
+
+/* Minimal multi-sheet .xlsx writer. No dependencies, no CDN — a real Excel
+   workbook is a ZIP of XML, and stored (uncompressed) entries are legal ZIP.
+   Keeping this local means the export still works on a bad connection. */
+
+const CRC=(()=>{const t=new Uint32Array(256);
+  for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}
+  return b=>{let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=t[(c^b[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0}})();
+
+const enc=s=>new TextEncoder().encode(s);
+const xml=s=>String(s==null?'':s)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  .replace(/"/g,'&quot;').replace(/'/g,'&apos;')
+  .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g,'');
+
+function col(n){let s='';n++;while(n>0){const m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=(n-m-1)/26}return s}
+
+function sheetXml(rows){
+  const body=rows.map((row,r)=>{
+    const cells=(row||[]).map((v,c)=>{
+      if(v===null||v===undefined||v==='')return '';
+      const ref=col(c)+(r+1);
+      if(typeof v==='number'&&isFinite(v))return `<c r="${ref}"><v>${v}</v></c>`;
+      return `<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${xml(v)}</t></is></c>`;
+    }).join('');
+    return `<row r="${r+1}">${cells}</row>`;
+  }).join('');
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>${body}</sheetData></worksheet>`;
+}
+
+function zip(files){
+  const chunks=[],central=[],names=[];let off=0;
+  const u16=n=>[n&255,(n>>8)&255], u32=n=>[n&255,(n>>8)&255,(n>>16)&255,(n>>24)&255];
+  // DOS timestamp. A zero date is month 0 / day 0, which strict readers reject.
+  const now=new Date();
+  const dtime=(now.getHours()<<11)|(now.getMinutes()<<5)|(now.getSeconds()>>1);
+  const ddate=((now.getFullYear()-1980)<<9)|((now.getMonth()+1)<<5)|now.getDate();
+  for(const f of files){
+    const name=enc(f.name), data=enc(f.data), crc=CRC(data);
+    const head=Uint8Array.from([0x50,0x4b,0x03,0x04,...u16(20),...u16(0),...u16(0),
+      ...u16(dtime),...u16(ddate),...u32(crc),...u32(data.length),...u32(data.length),
+      ...u16(name.length),...u16(0)]);
+    chunks.push(head,name,data);
+    central.push(Uint8Array.from([0x50,0x4b,0x01,0x02,...u16(20),...u16(20),...u16(0),...u16(0),
+      ...u16(dtime),...u16(ddate),...u32(crc),...u32(data.length),...u32(data.length),
+      ...u16(name.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(off)]));
+    names.push(name);
+    off+=head.length+name.length+data.length;
+  }
+  const dir=[];
+  central.forEach((c,i)=>{dir.push(c,names[i])});
+  let dsize=0; dir.forEach(d=>dsize+=d.length);
+  const end=Uint8Array.from([0x50,0x4b,0x05,0x06,...u16(0),...u16(0),
+    ...u16(files.length),...u16(files.length),...u32(dsize),...u32(off),...u16(0)]);
+  return new Blob([...chunks,...dir,end],
+    {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+}
+
+/** sheets: [{name, rows:[[cell,...],...]}] -> Blob */
+function workbook(sheets){
+  const safe=sheets.map((s,i)=>({
+    name:(s.name||('Sheet'+(i+1))).replace(/[\\\/\?\*\[\]:]/g,' ').slice(0,31),
+    rows:s.rows||[]}));
+  const files=[
+    {name:'[Content_Types].xml', data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+${safe.map((s,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')}
+</Types>`},
+    {name:'_rels/.rels', data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
+</Relationships>`},
+    {name:'xl/workbook.xml', data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<sheets>${safe.map((s,i)=>`<sheet name="${xml(s.name)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')}</sheets>
+</workbook>`},
+    {name:'xl/_rels/workbook.xml.rels', data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+${safe.map((s,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')}
+</Relationships>`},
+    ...safe.map((s,i)=>({name:`xl/worksheets/sheet${i+1}.xml`, data:sheetXml(s.rows)}))
+  ];
+  return zip(files);
+}
+
+
+
+
+/* ---------- storage ---------- */
+const KEY='callboard.v2';
+let S={done:{},ans:{},drafts:{}};
+try{Object.assign(S, JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
+S.done=S.done||{}; S.ans=S.ans||{}; S.drafts=S.drafts||{};
+const stateEl=()=>document.getElementById('saveState');
+let flash;
+function save(){
+  try{
+    localStorage.setItem(KEY,JSON.stringify(S));
+    const el=stateEl(); if(!el)return;
+    el.textContent='Saved '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+    el.className='ok'; clearTimeout(flash);
+    flash=setTimeout(()=>{el.className=''; el.textContent='Saved to this device';},2500);
+  }catch(e){ const el=stateEl(); if(el)el.textContent='COULD NOT SAVE — download a backup'; }
+}
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const words=t=>t&&t.trim()?t.trim().split(/\s+/).length:0;
+
+/* ---------- dates ---------- */
+const FMT=s=>new Date(s+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase();
+const LEFT=s=>Math.round((new Date(s+'T12:00:00')-new Date())/864e5);
+const heat=t=>{const n=LEFT(t.d);return n<=4?'hot':n<=11?'soon':''};
+const openTasks=()=>TASKS.filter(t=>!S.done[t.id]).sort((a,b)=>a.p-b.p||a.d.localeCompare(b.d));
+
+/* ---------- today ---------- */
+function strip(t,why){
+  const n=LEFT(t.d);
+  return `<div class="call ${heat(t)}${S.done[t.id]?' off':''}" data-id="${t.id}">
+    <div class="slot"><b>${FMT(t.d)}</b>${n<0?'overdue':n===0?'today':(t.m||n+' days')}</div>
+    <label class="tick"><input type="checkbox" data-id="${t.id}"${S.done[t.id]?' checked':''}>
+    <span><h3>${esc(t.t)}</h3>${why&&t.w?`<div class="why">${esc(t.w)}</div>`:''}
+    <div class="who">${esc(t.s)}</div></span></label></div>`;
+}
+function drawToday(){
+  const o=openTasks();
+  document.getElementById('board').innerHTML = o.length
+    ? o.slice(0,3).map(t=>strip(t,1)).join('')
+    : '<p style="padding:26px 0"><strong>Nothing called.</strong> Everything is struck.</p>';
+  document.getElementById('hdrToday').textContent =
+    o.length>=3?"You're called for three things":o.length?`You're called for ${o.length}`:'Nothing called';
+}
+function drawTally(){
+  const n=TASKS.filter(t=>S.done[t.id]).length;
+  document.getElementById('tally').textContent=`${n} of ${TASKS.length} struck · ${TASKS.length-n} to go`;
+  const nx=openTasks()[0];
+  document.getElementById('nextUp').textContent=nx?`NEXT: ${FMT(nx.d)}`:'ALL CLEAR';
+}
+function markTask(id,on){
+  document.querySelectorAll(`.call[data-id="${id}"]`).forEach(c=>c.classList.toggle('off',on));
+  document.querySelectorAll(`input[data-id="${id}"]`).forEach(i=>{if(i.checked!==on)i.checked=on});
+}
+
+/* ---------- full run ---------- */
+let filter='all';
+function drawRun(){
+  const list=TASKS.filter(t=>filter==='all'||t.s===filter).sort((a,b)=>a.d.localeCompare(b.d));
+  let out='',last='';
+  list.forEach(t=>{ if(t.d!==last){out+=`<div class="day">${FMT(t.d)}</div>`;last=t.d} out+=strip(t,0); });
+  document.getElementById('runList').innerHTML=out;
+  const groups=[...new Set(TASKS.map(t=>t.s))];
+  document.getElementById('chips').innerHTML=['all',...groups]
+    .map(g=>`<button data-f="${esc(g)}" aria-pressed="${filter===g}">${g==='all'?'Everything':esc(g)}</button>`).join('');
+}
+
+/* ---------- essays: progress ---------- */
+function essayProgress(e){
+  const total=e.gather.length+1+e.sharpen.length;
+  let n=0;
+  e.gather.forEach((q,i)=>{ if((S.ans[e.key+'.g'+i]||'').trim())n++; });
+  if((S.drafts[e.key]||'').trim())n++;
+  e.sharpen.forEach((q,i)=>{ if((S.ans[e.key+'.s'+i]||'').trim())n++; });
+  return {n,total,pct:Math.round(n/total*100)};
+}
+function drawEssayList(){
+  document.getElementById('essayList').innerHTML=ESSAYS.map(e=>{
+    const p=essayProgress(e), n=LEFT(e.due);
+    const st=p.pct===0?'Not started':p.pct===100?'Complete':`${p.pct}% through`;
+    return `<button class="pick" data-essay="${e.key}">
+      <div class="t">${esc(e.title)}</div>
+      <div class="s">${esc(e.school)} · ${e.limit} words · due ${FMT(e.due)}${n<0?' · OVERDUE':n<=7?` · ${n} days`:''}</div>
+      <div class="bar"><i style="width:${p.pct}%"></i></div>
+      <div class="pct">${st} — ${p.n} of ${p.total} steps</div></button>`;
+  }).join('');
+}
+
+/* ---------- essays: the guided walk ---------- */
+let cur=null, step='gather', gi=0;
+function openEssay(key){
+  cur=ESSAYS.find(e=>e.key===key); step='gather';
+  gi=cur.gather.findIndex((q,i)=>!(S.ans[cur.key+'.g'+i]||'').trim());
+  if(gi<0)gi=cur.gather.length-1;
+  document.getElementById('essayHome').hidden=true;
+  const w=document.getElementById('essayWalk'); w.hidden=false;
+  drawWalk(); window.scrollTo(0,0);
+}
+function closeEssay(){
+  cur=null;
+  document.getElementById('essayWalk').hidden=true;
+  document.getElementById('essayHome').hidden=false;
+  drawEssayList(); window.scrollTo(0,0);
+}
+function material(){
+  const rows=cur.gather.map((q,i)=>{
+    const a=(S.ans[cur.key+'.g'+i]||'').trim();
+    return a?`<dt>${esc(q.q)}</dt><dd>${esc(a)}</dd>`:'';
+  }).filter(Boolean).join('');
+  return rows?`<div class="material"><h4>Your raw material</h4><dl>${rows}</dl></div>`
+    :`<div class="material"><h4>Your raw material</h4><p>Nothing yet — go back to Gather.
+       You can't draft from an empty page, which is the entire point.</p></div>`;
+}
+function drawWalk(){
+  const e=cur, w=document.getElementById('essayWalk');
+  const tabs=[['gather','Gather',`1 · ${e.gather.length} questions`],
+              ['choose','Choose','2 · what to use'],
+              ['draft','Draft',`3 · ${e.limit} words`],
+              ['sharpen','Sharpen',`4 · ${e.sharpen.length} checks`]];
+  let mid='';
+  if(step==='gather'){
+    const q=e.gather[gi], id=e.key+'.g'+gi;
+    const filled=e.gather.map((x,i)=>(S.ans[e.key+'.g'+i]||'').trim()?'filled':'');
+    mid=`<div class="qcard">
+      <div class="qnum">Question ${gi+1} of ${e.gather.length}</div>
+      <p class="qtext">${esc(q.q)}</p>
+      ${q.h?`<p class="qhint">${esc(q.h)}</p>`:''}
+      <textarea id="gq" data-ans="${id}" placeholder="Type badly and fast. Nobody reads this but you.">${esc(S.ans[id]||'')}</textarea>
+      <div class="qnav">
+        <button class="btn" id="gPrev"${gi===0?' disabled':''}>Back</button>
+        <button class="btn go" id="gNext">${gi===e.gather.length-1?'Done gathering':'Next question'}</button>
+        <span class="dots">${filled.map((f,i)=>`<i class="${i===gi?'on':f}"></i>`).join('')}</span>
+      </div></div>
+      <p class="tag" style="margin-top:14px">These answers are notes, not writing. Short and ugly is correct.</p>`;
+  }
+  if(step==='choose'){
+    mid=`${material()}
+      <div class="qcard"><div class="qnum">Now pick</div>
+      <p class="qtext">${esc(e.choose.lead)}</p>
+      ${e.choose.body.map(b=>`<p>${b}</p>`).join('')}
+      <div class="qnav"><button class="btn go" data-step="draft">Start the draft</button>
+      <button class="btn" data-step="gather">Add more material</button></div></div>`;
+  }
+  if(step==='draft'){
+    const d=S.drafts[e.key]||'', wc=words(d);
+    mid=`${material()}
+      <div class="qcard"><div class="qnum">Shape it like this</div>
+      <ol class="shape">${e.shape.map(s=>`<li>${s}</li>`).join('')}</ol></div>
+      <textarea class="draft" id="draftBox" data-draft="${e.key}"
+        placeholder="Write it here. Pull straight from your material above — that's what it's for.">${esc(d)}</textarea>
+      <div class="count${wc>e.limit?' over':''}" id="draftCount">${wc} / ${e.limit} words</div>
+      <div class="qnav"><button class="btn go" data-step="sharpen">Now sharpen it</button></div>`;
+  }
+  if(step==='sharpen'){
+    const d=S.drafts[e.key]||'';
+    mid=`<div class="promptbox"><strong>Your draft</strong><div class="printed" style="display:block;margin-top:8px">${esc(d)||'<em>No draft yet — go back to step 3.</em>'}</div>
+      <cite>${words(d)} of ${e.limit} words</cite></div>
+      ${e.sharpen.map((q,i)=>{const id=e.key+'.s'+i;return `<div class="qcard" style="margin-bottom:12px">
+        <div class="qnum">Check ${i+1}</div><p class="qtext">${esc(q.q)}</p>
+        ${q.h?`<p class="qhint">${esc(q.h)}</p>`:''}
+        <textarea data-ans="${id}" placeholder="Answer honestly, then go fix the draft.">${esc(S.ans[id]||'')}</textarea></div>`}).join('')}
+      <div class="qnav"><button class="btn" data-step="draft">Back to the draft</button></div>`;
+  }
+  w.innerHTML=`<button class="btn" id="essayBack">← All essays</button>
+    <h2 style="margin-top:18px">${esc(e.title)}</h2><div class="rule"></div>
+    <div class="promptbox">${esc(e.prompt)}<cite>${esc(e.meta)}</cite></div>
+    <p>${esc(e.why)}</p>
+    <details><summary>What they're really asking</summary><div class="inner"><p>${esc(e.asking)}</p>
+      <p><strong>How this goes wrong:</strong> ${esc(e.failure)}</p></div></details>
+    <div class="steps" role="tablist">${tabs.map(([k,l,s])=>
+      `<button role="tab" aria-selected="${step===k}" data-step="${k}">${l}<span class="n">${s}</span></button>`).join('')}</div>
+    ${mid}`;
+  const ta=w.querySelector('#gq'); if(ta)ta.focus();
+}
+
+/* ---------- static tables ---------- */
+function drawStatic(){
+  document.getElementById('schoolList').innerHTML=SCHOOLS.map(s=>
+    `<details><summary>${esc(s.n)} <span class="tag">· ${esc(s.due)} · ${esc(s.plan)}</span></summary>
+     <div class="inner"><ul>${s.b.map(b=>`<li>${esc(b)}</li>`).join('')}</ul>
+     <a class="btn" href="${s.url}" target="_blank" rel="noopener">Open ${esc(s.n)} →</a></div></details>`).join('');
+  document.getElementById('moneyTable').innerHTML=
+    `<thead><tr><th>School</th><th>Sticker</th><th>Free-tuition rule</th><th>Meets need</th></tr></thead><tbody>`+
+    MONEY.map(m=>`<tr><td>${esc(m.n)}</td><td>${esc(m.sticker)}</td><td>${esc(m.rule)}</td><td>${esc(m.need)}</td></tr>`).join('')+'</tbody>';
+  document.getElementById('moneyDates').innerHTML=
+    `<thead><tr><th>Date</th><th>What</th></tr></thead><tbody>`+
+    MONEY_DATES.map(m=>`<tr><td>${esc(m.d)}</td><td>${esc(m.w)}</td></tr>`).join('')+'</tbody>';
+  document.getElementById('contactTable').innerHTML=
+    `<thead><tr><th>Where</th><th>Contact</th><th>For</th></tr></thead><tbody>`+
+    CONTACTS.map(c=>`<tr><td>${esc(c.w)}</td><td>${esc(c.c)}</td><td>${esc(c.f)}</td></tr>`).join('')+'</tbody>';
+}
+
+/* ---------- events ---------- */
+document.addEventListener('change',ev=>{
+  const cb=ev.target.closest('input[type=checkbox][data-id]');
+  if(cb){ S.done[cb.dataset.id]=cb.checked; save(); markTask(cb.dataset.id,cb.checked);
+          drawTally(); if(!document.getElementById('today').hidden)drawToday(); }
+});
+document.addEventListener('input',ev=>{
+  const t=ev.target;
+  if(t.dataset.ans){ S.ans[t.dataset.ans]=t.value; save(); return; }
+  if(t.dataset.draft){
+    S.drafts[t.dataset.draft]=t.value; save();
+    const e=ESSAYS.find(x=>x.key===t.dataset.draft), wc=words(t.value);
+    const c=document.getElementById('draftCount');
+    if(c){ c.textContent=`${wc} / ${e.limit} words`; c.classList.toggle('over',wc>e.limit); }
+  }
+});
+document.addEventListener('click',ev=>{
+  const tab=ev.target.closest('nav button');
+  if(tab){
+    document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected',b===tab));
+    document.querySelectorAll('main section').forEach(s=>s.hidden=s.id!==tab.dataset.t);
+    if(tab.dataset.t==='today')drawToday();
+    if(tab.dataset.t==='essays'&&!cur)drawEssayList();
+    window.scrollTo(0,0); return;
+  }
+  const pick=ev.target.closest('[data-essay]'); if(pick){openEssay(pick.dataset.essay);return;}
+  if(ev.target.id==='essayBack'){closeEssay();return;}
+  if(ev.target.id==='gNext'){
+    if(gi<cur.gather.length-1){gi++} else {step='choose'} drawWalk(); window.scrollTo(0,0); return;
+  }
+  if(ev.target.id==='gPrev'){ if(gi>0)gi--; drawWalk(); return; }
+  const st=ev.target.closest('[data-step]');
+  if(st&&cur){ step=st.dataset.step;
+    if(step==='gather'){gi=Math.min(gi,cur.gather.length-1)}
+    drawWalk(); window.scrollTo(0,0); return; }
+  const ch=ev.target.closest('#chips button'); if(ch){filter=ch.dataset.f;drawRun();return;}
+});
+
+/* ---------- backup ---------- */
+function download(blob,name){
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+const stamp=()=>new Date().toISOString().slice(0,10);
+function backup(){
+  download(new Blob([JSON.stringify(S,null,2)],{type:'application/json'}),
+    `callboard-backup-${stamp()}.json`);
+}
+document.getElementById('dlBackup').onclick=backup;
+document.getElementById('quickSave').onclick=backup;
+document.getElementById('upBackup').onclick=()=>document.getElementById('fileIn').click();
+document.getElementById('fileIn').onchange=ev=>{
+  const f=ev.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{ try{
+      const d=JSON.parse(r.result);
+      if(!d||typeof d!=='object')throw 0;
+      S={done:d.done||{},ans:d.ans||{},drafts:d.drafts||{}};
+      save(); drawToday(); drawTally(); drawRun(); drawEssayList();
+      if(cur)drawWalk();
+      alert('Restored. Everything is back.');
+    }catch(err){ alert("That file didn't look like a Callboard backup. Nothing was changed."); } };
+  r.readAsText(f); ev.target.value='';
+};
+document.getElementById('wipe').onclick=()=>{
+  if(!confirm('Erase every answer and draft on this device? This cannot be undone.'))return;
+  if(!confirm('Really sure? Download a backup first if you have not.'))return;
+  S={done:{},ans:{},drafts:{}}; save();
+  drawToday(); drawTally(); drawRun(); drawEssayList(); if(cur)closeEssay();
+};
+
+/* ---------- excel ---------- */
+document.getElementById('xlsx').onclick=()=>{
+  const sheets=[];
+  const add=(rows,name)=>sheets.push({name,rows});
+
+  add([['Task','School','Due','Status','Why it matters'],
+    ...TASKS.slice().sort((a,b)=>a.d.localeCompare(b.d))
+      .map(t=>[t.t,t.s,t.d,S.done[t.id]?'DONE':'open',t.w])],'Checklist');
+
+  const er=[['Essay','School','Word limit','Due','Step','Question','Her answer']];
+  ESSAYS.forEach(e=>{
+    e.gather.forEach((q,i)=>er.push([e.title,e.school,e.limit,e.due,'Gather '+(i+1),q.q,S.ans[e.key+'.g'+i]||'']));
+    er.push([e.title,e.school,e.limit,e.due,'DRAFT',e.prompt,S.drafts[e.key]||'']);
+    e.sharpen.forEach((q,i)=>er.push([e.title,e.school,e.limit,e.due,'Sharpen '+(i+1),q.q,S.ans[e.key+'.s'+i]||'']));
+  });
+  add(er,'Essay work');
+
+  add([['Essay','School','Limit','Words written','Draft'],
+    ...ESSAYS.map(e=>[e.title,e.school,e.limit,words(S.drafts[e.key]||''),S.drafts[e.key]||''])],'Drafts');
+
+  add([['School','Plan','Deadline','Notes','Link'],
+    ...SCHOOLS.map(s=>[s.n,s.plan,s.due,s.b.join(' | '),s.url])],'Schools');
+
+  add([['School','Sticker cost','Free-tuition rule','Meets full need'],
+    ...MONEY.map(m=>[m.n,m.sticker,m.rule,m.need]),[],
+    ['Money deadlines'],...MONEY_DATES.map(m=>[m.d,m.w]),[],
+    ['FAFSA Notre Dame','001840'],['CSS Notre Dame','1841'],['CSS Holy Cross','3282']],'Money');
+
+  add([['Where','Contact','For'],...CONTACTS.map(c=>[c.w,c.c,c.f])],'Contacts');
+
+  download(workbook(sheets),`college-applications-${stamp()}.xlsx`);
+};
+
+/* ---------- print ---------- */
+function mirrorDrafts(){
+  document.querySelectorAll('.printed[data-mirror]').forEach(n=>n.remove());
+  document.querySelectorAll('textarea').forEach(ta=>{
+    const d=document.createElement('div');
+    d.className='printed'; d.dataset.mirror='1';
+    d.textContent=ta.value||'(blank)';
+    ta.after(d);
+  });
+}
+document.getElementById('printAll').onclick=()=>{
+  mirrorDrafts();
+  document.querySelectorAll('main section').forEach(s=>s.dataset.wasHidden=s.hidden?'1':'');
+  document.querySelectorAll('main section').forEach(s=>s.hidden=false);
+  document.querySelectorAll('details').forEach(d=>{d.dataset.wasOpen=d.open?'1':'';d.open=true});
+  window.print();
+};
+document.getElementById('printWeek').onclick=()=>{
+  document.querySelectorAll('main section').forEach(s=>{s.dataset.wasHidden=s.hidden?'1':'';s.hidden=s.id!=='today'});
+  window.print();
+};
+window.addEventListener('afterprint',()=>{
+  document.querySelectorAll('main section').forEach(s=>{
+    if(s.dataset.wasHidden!==undefined)s.hidden=s.dataset.wasHidden==='1'; delete s.dataset.wasHidden;});
+  document.querySelectorAll('details').forEach(d=>{
+    if(d.dataset.wasOpen!==undefined)d.open=d.dataset.wasOpen==='1'; delete d.dataset.wasOpen;});
+  document.querySelectorAll('.printed[data-mirror]').forEach(n=>n.remove());
+  const sel=document.querySelector('nav button[aria-selected="true"]');
+  if(sel)document.querySelectorAll('main section').forEach(s=>s.hidden=s.id!==sel.dataset.t);
+});
+
+/* ---------- go ---------- */
+drawStatic(); drawToday(); drawTally(); drawRun(); drawEssayList();
+
+</script>
+</body>
+</html>
