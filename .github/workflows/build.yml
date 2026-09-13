@@ -1,0 +1,31 @@
+# The page that ships is committed to the repo, not built by the host - so the
+# thing that can silently go wrong is editing src/ and forgetting to rebuild.
+# The live site then serves a stale page and nothing anywhere says so.
+# This job rebuilds and fails if the committed output doesn't match src/.
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  output-matches-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - run: python3 build.py
+
+      - name: Committed page must match src/
+        run: |
+          if ! git diff --quiet; then
+            echo "::error::The committed page is stale. Run: python3 build.py, then commit the changed files."
+            git diff --stat
+            exit 1
+          fi
+          echo "Committed page matches src/."
